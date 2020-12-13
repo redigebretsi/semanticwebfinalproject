@@ -26,9 +26,9 @@ public class StaticParis {
 
 	final String CITYNAME = "PARIS";
 	static String url = "https://opendata.paris.fr/api/records/1.0/search/?dataset=velib-emplacement-des-stations";
-	static List<Station> stationsList = new ArrayList<Station>();
+	static List<BicycleStation> stationsList = new ArrayList<BicycleStation>();
 	
-	public List<Station> processData() throws JSONException, IOException {
+	public List<BicycleStation> processData() throws JSONException, IOException {
 		JSONArray stations = readJsonFromUrl(url);
 		processStations(stations);
 		return stationsList;		
@@ -66,7 +66,7 @@ public class StaticParis {
 			double lon = (Double) fileds.get("lon");
 			int capacity =  (Integer) fileds.get("capacity");
 
-			Station ss = new Station(ID, name, lat, lon, capacity);
+			BicycleStation ss = new BicycleStation(ID, name, lat, lon, capacity);
 			stationsList.add(ss);
 		}
 	}

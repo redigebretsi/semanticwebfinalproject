@@ -46,14 +46,14 @@ public class CreateModel {
 		sslResolve();
 		initializeModel();
 		for (String city : cities) {
-			List<Station> stations = null;
+			List<BicycleStation> stations = null;
 
 			if (city == "SAINT-ETIENNE") {
 				StaticSaintEtienne se = new StaticSaintEtienne();
 				stations = se.processData();
 				addCityToModel(stations, city);
 			} else if (city == "LYON") {
-				StaticLyonKey ly = new StaticLyonKey();
+				ReadStaticBicycleData ly = new ReadStaticBicycleData();
 				stations = ly.processData();
 				addCityToModel(stations, city);
 			}
@@ -109,14 +109,14 @@ public class CreateModel {
 		model.setNsPrefix("onto", NsPrefix.getOntoNS());
 	}
 
-	public static void addCityToModel(List<Station> stations, String city) {
+	public static void addCityToModel(List<BicycleStation> stations, String city) {
 		// word Station is used for BicycleStations
 
 		bStationURIPrefix = NsPrefix.getOntoNS() + "Station";
 		cityURIPrefix = NsPrefix.getOntoNS() + "City";
 		publicBicycleStationURIPrefix = NsPrefix.getOntoNS() + "PublicBicycleStation";
 
-		for (Station station : stations) {
+		for (BicycleStation station : stations) {
 			Resource StationRs = model.createResource(bStationURIPrefix + ":" + city + ":" + station.getID());
 			if (station.getName() != "") {
 				Property pstationName = model.createProperty(NsPrefix.getOntoNS() + "stationName");

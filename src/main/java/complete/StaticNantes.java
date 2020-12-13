@@ -22,9 +22,9 @@ import org.json.JSONObject;
 
 public class StaticNantes {
 	static String url = "https://api.jcdecaux.com/vls/v1/stations?contract=nantes&&apiKey=b5c059fa1b8e115f157e20cfa797e01b7650f0a7";
-	static List<Station> stationsList = new ArrayList<Station>();
+	static List<BicycleStation> stationsList = new ArrayList<BicycleStation>();
 
-	public List<Station> processData() throws JSONException, IOException {
+	public List<BicycleStation> processData() throws JSONException, IOException {
 		JSONArray stations = readJsonFromUrl(url);
 		processStations(stations);
 		return stationsList;		
@@ -62,7 +62,7 @@ public class StaticNantes {
 			double lon = (Double) position.get("lng");
 			int capacity =  (Integer) stationJson.get("bike_stands");
 
-			stationsList.add(new Station(ID.toString(), name, lat, lon, capacity));
+			stationsList.add(new BicycleStation(ID.toString(), name, lat, lon, capacity));
 		}
 	}
 }

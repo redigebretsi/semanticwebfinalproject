@@ -22,9 +22,9 @@ import org.json.JSONObject;
 
 public class StaticToulouse {
 	static String url = "https://data.toulouse-metropole.fr/api/records/1.0/search/?dataset=velo-toulouse&rows=1000";
-	static List<Station> stationsList = new ArrayList<Station>();
+	static List<BicycleStation> stationsList = new ArrayList<BicycleStation>();
 
-	public List<Station> processData() throws JSONException, IOException {
+	public List<BicycleStation> processData() throws JSONException, IOException {
 		JSONArray stations = readJsonFromUrl(url);
 		processStations(stations);
 		return stationsList;

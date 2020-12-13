@@ -41,10 +41,10 @@ public class StaticLyon {
 
 	final String CITYNAME = "LYON";
 	static String url = "https://download.data.grandlyon.com/ws/grandlyon/pvo_patrimoine_voirie.pvostationvelov/all.json?maxfeatures=100&start=1";
-	static List<Station> stationsList = new ArrayList<Station>();
+	static List<BicycleStation> stationsList = new ArrayList<BicycleStation>();
 	static JSONArray stations = new JSONArray();
 	
-	public List<Station> processData() throws JSONException, IOException {
+	public List<BicycleStation> processData() throws JSONException, IOException {
 		processFile(url);
 		processStations();
 		return stationsList;		
@@ -106,7 +106,7 @@ public class StaticLyon {
 			double lat = 0;
 			double lon = 0;
 			int capacity =  0;
-			Station ss = new Station(ID, name, lat, lon, capacity);
+			BicycleStation ss = new BicycleStation(ID, name, lat, lon, capacity);
 			stationsList.add(ss);
 		}
 	}

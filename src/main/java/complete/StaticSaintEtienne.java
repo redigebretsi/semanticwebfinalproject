@@ -22,9 +22,9 @@ import org.json.JSONObject;
 
 public class StaticSaintEtienne {
 	static String url = "https://saint-etienne-gbfs.klervi.net/gbfs/en/station_information.json";
-	static List<Station> stationsList = new ArrayList<Station>();
+	static List<BicycleStation> stationsList = new ArrayList<BicycleStation>();
 
-	public List<Station> processData() throws JSONException, IOException {
+	public List<BicycleStation> processData() throws JSONException, IOException {
 		JSONArray stations = readJsonFromUrl(url);
 		processStations(stations);
 		return stationsList;		
@@ -62,7 +62,7 @@ public class StaticSaintEtienne {
 			double lon = (Double) stationJson.get("lon");
 			int capacity =  (Integer) stationJson.get("capacity");
 
-			stationsList.add(new Station(ID, name, lat, lon, capacity));
+			stationsList.add(new BicycleStation(ID, name, lat, lon, capacity));
 		}
 	}
 }
