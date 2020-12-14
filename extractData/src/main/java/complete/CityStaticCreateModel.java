@@ -69,24 +69,26 @@ public class CityStaticCreateModel {
 		 */
 		city.addProperty(hasHospital, hospital);
 
-		
-		  ReadStaticSNCFData sncfData = new ReadStaticSNCFData(); List<SNCFStation>
-		  stations = sncfData.processData(); 
-		  appendSNCFtoModel(bStation, stations);
-		  
-		 ReadStaticBusTramMetroData btmData = new ReadStaticBusTramMetroData();
-		  List<BTMStations> btmstations = btmData.processData();
-		  appendBTMStoModel(bStation, btmstations);
-		 
-		ReadStaticBicycleData bicycleData = new ReadStaticBicycleData();
-	List<BicycleStation> bicylestations = bicycleData.processData();
-		for (BicycleStation station : bicylestations) {
-			System.out.println(station.getID());
-		}
-
-		appendBicycletoModel(bStation, bicylestations);
-
-		saveToFueski();
+		/*
+		 * ReadStaticSNCFData sncfData = new ReadStaticSNCFData(); List<SNCFStation>
+		 * stations = sncfData.processData(); appendSNCFtoModel(bStation, stations);
+		 * 
+		 * ReadStaticBusTramMetroData btmData = new ReadStaticBusTramMetroData();
+		 * List<BTMStations> btmstations = btmData.processData();
+		 * appendBTMStoModel(bStation, btmstations);
+		 * 
+		 * ReadStaticBicycleData bicycleData = new ReadStaticBicycleData();
+		 * List<BicycleStation> bicylestations = bicycleData.processData(); for
+		 * (BicycleStation station : bicylestations) {
+		 * System.out.println(station.getID()); }
+		 * 
+		 * appendBicycletoModel(bStation, bicylestations);
+		 * 
+		 * saveToFueski();
+		 */
+		ReadHospitalData hospitalData = new ReadHospitalData();
+		List<Hospital> hospitalList = hospitalData.processData();
+		appendHospitalstoModel(city, hospitalList);
 		// model.write(System.out, "turtle");
 
 	}
@@ -236,7 +238,31 @@ public class CityStaticCreateModel {
 			System.out.println(bicyclestation);
 
 		}
+	}
 
+	public static void appendHospitalstoModel(Resource city, List<Hospital> hospitalList) {
+
+		Property hashospital = model.createProperty(NsPrefix.getOntoNS() + "hashospital");
+		Property hasId = model.createProperty(NsPrefix.getOntoNS() + "hasId");
+		Property hasNAme = model.createProperty(NsPrefix.getOntoNS() + "hasNAme");
+		Property hascapacity = model.createProperty(NsPrefix.getOntoNS() + "hascapacity");
+		Property hasStation = model.createProperty(NsPrefix.getOntoNS() + "hasStation");
+		Property hasLatitude = model.createProperty(NsPrefix.getOntoNS() + "hasLatitude");
+		Property hasLongitude = model.createProperty(NsPrefix.getOntoNS() + "hasLongitude");
+
+		for (Hospital station : hospitalList) {
+			//Resource bicyclestation = model
+			//		.createResource(NsPrefix.getOntoNS() + "BicycleStation/" + station.getID().replaceAll(" ", "_"));
+			//blank.addProperty(hasBicycleStation, bicyclestation);
+			//bicyclestation.addProperty(hasNAme, station.getName(), "En");
+			//Statement statement_pcapacity = model.createLiteralStatement(bicyclestation, hascapacity,
+			//		station.getCapacity());
+			//model.add(statement_pcapacity);
+			//bicyclestation.addLiteral(model.createProperty(NsPrefix.getGeoNS() + "hasLatitude"), station.getLat());
+			//bicyclestation.addLiteral(model.createProperty(NsPrefix.getGeoNS() + "hasLongitude"), station.getLon());
+			//System.out.println(bicyclestation);
+
+		}
 	}
 
 	public static void saveToFueski() {
