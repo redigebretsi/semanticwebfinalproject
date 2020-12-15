@@ -56,16 +56,22 @@ public class AddWeather {
 	// Get all stations
 	public static List<Location> getAllStationsWithLocations() {
         List<Location> locationsList = new ArrayList<Location>();
+        //"PREFIX onto: <http://www.semanticweb.org/emse/ontologies/2019/11/bicycle_stations.owl#>\n" +
+        //"PREFIX geo: <https://www.w3.org/2003/01/geo/wgs84_pos#>\n" +
+        //"PREFIX schema: <http://schema.org/>\n" +
+        //"PREFIX ont: <http://purl.org/net/ns/ontology-annot#>\n" +
+        //"prefix xsd: <http://www.w3.org/2001/XMLSchema#> \n" +
+        //"\n" +
        // prefix city:  <https://schema.org/City> .
         //	@prefix station: <https://schema.org/Station> .
        //@prefix xsd:   <http://www.w3.org/2000/01/rdf-schema/> .
        //@prefix hospital: <https://schema.org/Hospital> .
        //@prefix onto:  <http://www.semanticweb.org/emse/ontologies/2020/11/city.owl#> .
-	        String query = "PREFIX onto: <http://www.semanticweb.org/emse/ontologies/2019/11/bicycle_stations.owl#>\n" +
-	                "PREFIX geo: <https://www.w3.org/2003/01/geo/wgs84_pos#>\n" +
-	                "PREFIX schema: <http://schema.org/>\n" +
-	                "PREFIX ont: <http://purl.org/net/ns/ontology-annot#>\n" +
-	                "prefix xsd: <http://www.w3.org/2001/XMLSchema#> \n" +
+	        String query = "PREFIX city:  <https://schema.org/City>\n" +
+	                "PREFIX station: <https://schema.org/Station>>\n" +
+	                "PREFIX xsd:   <http://www.w3.org/2000/01/rdf-schema/>\n" +
+	                "PREFIX hospital: <https://schema.org/Hospital>\n" +
+	                "prefix onto:  <http://www.semanticweb.org/emse/ontologies/2020/11/city.owl#> \n" +
 	                "\n" +
 	                "SELECT ?station ?lat ?lon ?stationName \n" +
 	                "WHERE {\n" +
