@@ -1,6 +1,8 @@
 package complete;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -124,6 +126,7 @@ public class DynamicLyon {
 			UpdateRequest update  = UpdateFactory.create(query);
 	        UpdateProcessor qexec = UpdateExecutionFactory.createRemote(update, FUESKI_LOCAL_ENDPOINT);
 	        qexec.execute();	
+	        //model.write(new FileOutputStream(new File(url)), "TURTLE");
 		}
 		System.out.println("DONE: Added Lyon dynamic data");
 	}

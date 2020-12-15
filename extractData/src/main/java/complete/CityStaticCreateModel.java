@@ -138,7 +138,7 @@ public class CityStaticCreateModel {
 					.createResource(NsPrefix.getOntoNS() + "SNCFstation/" + station.getID().replaceAll(" ", "_"));
 			Resource train = model.createResource();
 			blank.addProperty(hasSNFstation, trainstation);
-			train.addProperty(RDF.type, NsPrefix.getStationsURIPrefix()+ "SNCFStation");
+			trainstation.addProperty(RDF.type, NsPrefix.getStationsURIPrefix()+ "SNCFStation");
 			trainstation.addProperty(hasId, station.getID());
 			trainstation.addProperty(hasNAme, station.getName());
 			trainstation.addProperty(hasLatitude, String.valueOf(station.getLat()), XSDDatatype.XSDdouble);
