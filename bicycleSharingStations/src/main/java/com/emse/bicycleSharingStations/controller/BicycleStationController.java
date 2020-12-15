@@ -1,6 +1,6 @@
 package com.emse.bicycleSharingStations.controller;
 
-import com.emse.bicycleSharingStations.service.BicycleStationService;
+import com.emse.bicycleSharingStations.service.CityGuideService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Controller;
@@ -13,7 +13,7 @@ import java.util.Map;
 public class BicycleStationController {
 
     @Autowired
-    BicycleStationService bicycleStationService;
+    CityGuideService bicycleStationService;
 
     @RequestMapping("/")
     public String welcome(Map<String, Object> model) {
@@ -28,5 +28,9 @@ public class BicycleStationController {
     @RequestMapping("/bicycleSearch")
     public String bicycleSearch(Map<String, Object> model) {
         return "bicycleSearchOptions";
+    }
+    @RequestMapping("/poi")
+    public String poi(Map<String, Object> model) {
+    	return "poi";
     }
 }

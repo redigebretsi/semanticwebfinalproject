@@ -12,9 +12,14 @@
 
 
 <script type="text/javascript">
-   var bicycleStationsTable;
+   var bicycleStationsTable,hospitalsTable,busTable,tramsTable,metroTable,sncfTable;
    $(function () {
-        $("#bicycleStations").hide();
+       $("#bicycleStations").hide();
+       $("#hospitals").hide();
+       $("#sncfStations").hide();
+       $("#metroStations").hide();
+       $("#busStations").hide();
+       $("#tramStations").hide();
          bicycleStationsTable = $('#bicycleStationsTable').DataTable({
                     "sPaginationType": "full_numbers",
                     "bDestroy": true,
@@ -36,34 +41,152 @@
                     ],
                     responsive: true
                 });
+         
+              hospitalsTable = $('#hospitalsTable').DataTable({
+                          "sPaginationType": "full_numbers",
+                          "bDestroy": true,
+                          'bAutoWidth': false,
+                          'searching': false,
+                          'info': false,
+                          'paging': false,
+                          "columnDefs": [
+                              {width: "100px", "targets": [0,1,4]},
+                         
+                              {width: "80px", "targets": [2]},
+                              {width: "320px", "targets": [3]},
+                              {className: "text-center", "targets": [1, 2, 3]}
+                             
+                          ],
+                          "order": [
+                              [0, "asc"]
+                          ],
+                          responsive: true
+                      });
+               
+                    busTable = $('#busTable').DataTable({
+                                "sPaginationType": "full_numbers",
+                                "bDestroy": true,
+                                'bAutoWidth': false,
+                                'searching': false,
+                                'info': false,
+                                'paging': false,
+                                "columnDefs": [
+                                    {width: "320px", "targets": [0]},
+                                    {width: "100px", "targets": [1,3]},
+                                    {width: "80px", "targets": [2]},
+                                    {className: "text-center", "targets": [1, 2, 3]}
+                                   
+                                ],
+                                "order": [
+                                    [0, "asc"]
+                                ],
+                                responsive: true
+                            });
+                     
+                          tramsTable = $('#tramsTable').DataTable({
+                                      "sPaginationType": "full_numbers",
+                                      "bDestroy": true,
+                                      'bAutoWidth': false,
+                                      'searching': false,
+                                      'info': false,
+                                      'paging': false,
+                                      "columnDefs": [
+                                    	  {width: "320px", "targets": [0]},
+                                          {width: "100px", "targets": [1,3]},
+                                          {width: "80px", "targets": [2]},
+                                          {className: "text-center", "targets": [1, 2, 3]}
+                                      ],
+                                      "order": [
+                                          [0, "asc"]
+                                      ],
+                                      responsive: true
+                                  });
+                         
+                               
+                               metroTable = $('#metroTable').DataTable({
+                                           "sPaginationType": "full_numbers",
+                                           "bDestroy": true,
+                                           'bAutoWidth': false,
+                                           'searching': false,
+                                           'info': false,
+                                           'paging': false,
+                                           "columnDefs": [
+                                         	  {width: "320px", "targets": [0]},
+                                               {width: "100px", "targets": [1,3]},
+                                               {width: "80px", "targets": [2]},
+                                               {className: "text-center", "targets": [1, 2, 3]}
+                                           ],
+                                           "order": [
+                                               [0, "asc"]
+                                           ],
+                                           responsive: true
+                                       });
+                            
+                                    sncfTable = $('#sncfTable').DataTable({
+                                                "sPaginationType": "full_numbers",
+                                                "bDestroy": true,
+                                                'bAutoWidth': false,
+                                                'searching': false,
+                                                'info': false,
+                                                'paging': false,
+                                                "columnDefs": [
+                                                    {width: "320px", "targets": [0]},
+                                                    {width: "100px", "targets": [1,5,6]},
+                                                    {width: "80px", "targets": [2]},
+                                                    {width: "110px", "targets": [3,4]},
+                                                  
+                                                    {className: "text-center", "targets": [1, 2, 3, 5, 6]}
+                                                    
+                                                ],
+                                                "order": [
+                                                    [0, "asc"]
+                                                ],
+                                                responsive: true
+                                            });
 
 
         $ ("#search-form").submit(function(event){
+        	alert("Clicked");
            // stop submit the form, we will post it manually.
             event.preventDefault();
             $(".error").remove();
-            if($("#city").val() != 0){
-                searchStationsByCity();
+            if($("#choice").val() =="HOSPITALS"){
+                hospitals();
+            }
+            else if($("#choice").val() =="BUSSTATIONS"){
+                btm("BUSSTATIONS");
+            }
+            else if($("#choice").val() =="TRAMSTATIONS"){
+            	 btm("TRAMSTATIONS");
+            } 
+            else if($("#choice").val() =="BICYCLESTATIONS"){
+                bicycle();
+            } else if($("#choice").val() =="SNCFSTATIONS"){
+                sncf();
+            }
+            else if($("#choice").val() =="METROSTATIONS"){
+            	 btm("METROSTATIONS");
             }else{
-                $('#city').after('<span class="error">This field is required</span>');
+                $('#choice').after('<span class="error">This field is required</span>');
             }
         });
     });
 
-function searchStationsByCity () {
+//function searchByChoice ()
+function bicycle (){
     $("#bicycleStations").show();
     //$('#loadingModal').modal('show');
-    var city = $("#city").val();
+    var choice = $("#choice").val();
     $("#btn-search").prop("disabled", true);
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: "/api/search/" + city,
+        url: "/api/bicyclesearch/",
         dataType: 'json',
         cache: false,
         timeout: 600000,
         success: function (data) {
-            setTableRows(data);
+            setBicycleTableRows(data);
             $("#btn-search").prop("disabled", false);
             //$('#loadingModal').modal('hide');
         },
@@ -81,7 +204,7 @@ function searchStationsByCity () {
 // TODO check value.ID is not working.
 // TODO add content tag for date field
 // TODO xsd date time for lat, long
-function setTableRows(data){
+function setBicycleTableRows(data){
     var res='';
     $.each (data, function (key, value) {
    // console.log(value);
@@ -93,11 +216,211 @@ function setTableRows(data){
             '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2019/11/bicycle_stations.owl#" resource="'+value.id+'"><span property="capacity">'+value.capacity+'</span></td>'+
             '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2019/11/bicycle_stations.owl#" resource="'+value.id+'"><span property="availableBikes">'+value.availableBikes+'</span></td>'+
             '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2019/11/bicycle_stations.owl#" resource="'+value.id+'"><span property="updatedDatetime">'+value.localUpdateDateTime+'</span></td>'+
-            '<td><button id="a" class="btn btn-primary float-right">info</button></td>'+
 
         '</tr>';
     });
-    $('tbody').html(res);
+
+    $("#hospitals").hide();
+    $("#sncfStations").hide();
+    $("#metroStations").hide();
+    $("#busStations").hide();
+    $("#tramStations").hide();
+    
+    $('#bicycletbody').html(res);
+}
+function hospitals(){
+    $("#hospitals").show();
+    //$('#loadingModal').modal('show');
+    var choice = $("#choice").val();
+    $("#btn-search").prop("disabled", true);
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: "/api/hospitalsearch/",
+        dataType: 'json',
+        cache: false,
+        timeout: 600000,
+        success: function (data) {
+        	setHospitalTableRows(data);
+            $("#btn-search").prop("disabled", false);
+            //$('#loadingModal').modal('hide');
+        },
+        error: function (e) {
+            var json = "<h4>Ajax Response</h4><pre>"+ e.responseText + "</pre>";
+            $('#error-msg').innerHTML=json;
+            console.log("ERROR : ", e);
+            $("#btn-search").prop("disabled", false);
+        }
+    });
+}
+function setHospitalTableRows(data){
+    var res='';
+    $.each (data, function (key, value) {
+   // console.log(value);
+        res +=
+        '<tr>'+
+            '<td vocab="https://opendata.paris.fr/api/records/1.0/search/?dataset=velib-emplacement-des-stations" resource="'+value.id+'" typeof="PublicBicycleStation"><span property="stationName">'+value.name+'</span></td>'+
+            '<td prefix="geo: https://www.w3.org/2003/01/geo/wgs84_pos#" resource="'+value.id+'"><span property="lat">'+value.lat+'</span></td>'+
+            '<td prefix="geo: https://www.w3.org/2003/01/geo/wgs84_pos#" resource="'+value.id+'"><span property="lon">'+value.lon+'</span></td>'+
+            '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2019/11/bicycle_stations.owl#" resource="'+value.id+'"><span property="capacity">'+value.capacity+'</span></td>'+
+            '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2019/11/bicycle_stations.owl#" resource="'+value.id+'"><span property="availableBikes">'+value.availableBikes+'</span></td>'+
+        '</tr>';
+    });
+
+    $("#bicycleStations").hide();
+    $("#sncfStations").hide();
+    $("#metroStations").hide();
+    $("#busStations").hide();
+    $("#tramStations").hide();
+    
+    $('#hospitaltbody').html(res);
+}
+function  sncf(){
+    $("#sncfStations").show();
+    //$('#loadingModal').modal('show');
+    var choice = $("#choice").val();
+    $("#btn-search").prop("disabled", true);
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: "/api/hospitalsearch/",
+        dataType: 'json',
+        cache: false,
+        timeout: 600000,
+        success: function (data) {
+        	setSNCFTableRows(data);
+            $("#btn-search").prop("disabled", false);
+            //$('#loadingModal').modal('hide');
+        },
+        error: function (e) {
+            var json = "<h4>Ajax Response</h4><pre>"+ e.responseText + "</pre>";
+            $('#error-msg').innerHTML=json;
+            console.log("ERROR : ", e);
+            $("#btn-search").prop("disabled", false);
+        }
+    });
+}
+function setSNCFTableRows(data){
+    var res='';
+    $.each (data, function (key, value) {
+   // console.log(value);
+        res +=
+        '<tr>'+
+            '<td vocab="https://opendata.paris.fr/api/records/1.0/search/?dataset=velib-emplacement-des-stations" resource="'+value.id+'" typeof="PublicBicycleStation"><span property="stationName">'+value.name+'</span></td>'+
+            '<td prefix="geo: https://www.w3.org/2003/01/geo/wgs84_pos#" resource="'+value.id+'"><span property="lat">'+value.lat+'</span></td>'+
+            '<td prefix="geo: https://www.w3.org/2003/01/geo/wgs84_pos#" resource="'+value.id+'"><span property="lon">'+value.lon+'</span></td>'+
+            '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2019/11/bicycle_stations.owl#" resource="'+value.id+'"><span property="capacity">'+value.capacity+'</span></td>'+
+            '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2019/11/bicycle_stations.owl#" resource="'+value.id+'"><span property="availableBikes">'+value.availableBikes+'</span></td>'+
+            '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2019/11/bicycle_stations.owl#" resource="'+value.id+'"><span property="capacity">'+value.capacity+'</span></td>'+
+            '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2019/11/bicycle_stations.owl#" resource="'+value.id+'"><span property="availableBikes">'+value.availableBikes+'</span></td>'+
+        '</tr>';
+    });
+
+    $("#bicycleStations").hide();
+    $("#hospitals").hide();
+    $("#metroStations").hide();
+    $("#busStations").hide();
+    $("#tramStations").hide();
+    
+    $('#sncftbody').html(res);
+}
+function btm(type){
+	if(type=="BUSSTATIONS"){
+		 $("#busStations").show();
+	}
+	else if(type=="TRAMSTATIONS"){
+		 $("#tramStations").show();
+	}
+	else if(type=="METROSTATIONS"){
+		 $("#metroStations").show();
+	}
+    //$('#loadingModal').modal('show');
+    var choice = $("#choice").val();
+    $("#btn-search").prop("disabled", true);
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: "/api/hospitalsearch/"+choice,
+        dataType: 'json',
+        cache: false,
+        timeout: 600000,
+        success: function (choice,data) {
+        	setBTMTableRows(data);
+            $("#btn-search").prop("disabled", false);
+            //$('#loadingModal').modal('hide');
+        },
+        error: function (e) {
+            var json = "<h4>Ajax Response</h4><pre>"+ e.responseText + "</pre>";
+            $('#error-msg').innerHTML=json;
+            console.log("ERROR : ", e);
+            $("#btn-search").prop("disabled", false);
+        }
+    });
+}
+function setBTMTableRows(choice,data){
+    var res='';
+    if(choice=="BUSSTATIONS"){
+    	 $.each (data, function (key, value) {
+    		   // console.log(value);
+    		        res +=
+    		        '<tr>'+
+    		            '<td vocab="https://opendata.paris.fr/api/records/1.0/search/?dataset=velib-emplacement-des-stations" resource="'+value.id+'" typeof="PublicBicycleStation"><span property="stationName">'+value.name+'</span></td>'+
+    		            '<td prefix="geo: https://www.w3.org/2003/01/geo/wgs84_pos#" resource="'+value.id+'"><span property="lat">'+value.lat+'</span></td>'+
+    		            '<td prefix="geo: https://www.w3.org/2003/01/geo/wgs84_pos#" resource="'+value.id+'"><span property="lon">'+value.lon+'</span></td>'+
+    		            '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2019/11/bicycle_stations.owl#" resource="'+value.id+'"><span property="capacity">'+value.capacity+'</span></td>'+
+    		        '</tr>';
+    		    });
+
+         $("#bicycleStations").hide();
+         $("#hospitals").hide();
+         $("#sncfStations").hide();
+         $("#metroStations").hide();
+         $("#tramStations").hide();
+         
+    		    $('#bustbody').html(res);
+	}
+	else if(choice=="TRAMSTATIONS"){
+		 $.each (data, function (key, value) {
+			   // console.log(value);
+			        res +=
+			        '<tr>'+
+			            '<td vocab="https://opendata.paris.fr/api/records/1.0/search/?dataset=velib-emplacement-des-stations" resource="'+value.id+'" typeof="PublicBicycleStation"><span property="stationName">'+value.name+'</span></td>'+
+			            '<td prefix="geo: https://www.w3.org/2003/01/geo/wgs84_pos#" resource="'+value.id+'"><span property="lat">'+value.lat+'</span></td>'+
+			            '<td prefix="geo: https://www.w3.org/2003/01/geo/wgs84_pos#" resource="'+value.id+'"><span property="lon">'+value.lon+'</span></td>'+
+			            '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2019/11/bicycle_stations.owl#" resource="'+value.id+'"><span property="capacity">'+value.capacity+'</span></td>'+
+			        '</tr>';
+			    });
+
+	       $("#bicycleStations").hide();
+	       $("#hospitals").hide();
+	       $("#sncfStations").hide();
+	       $("#metroStations").hide();
+	       $("#busStations").hide();
+	       
+			    $('#tramtbody').html(res);
+	}
+	else if(choice=="METROSTATIONS"){
+		 $.each (data, function (key, value) {
+			   // console.log(value);
+			        res +=
+			        '<tr>'+
+			            '<td vocab="https://opendata.paris.fr/api/records/1.0/search/?dataset=velib-emplacement-des-stations" resource="'+value.id+'" typeof="PublicBicycleStation"><span property="stationName">'+value.name+'</span></td>'+
+			            '<td prefix="geo: https://www.w3.org/2003/01/geo/wgs84_pos#" resource="'+value.id+'"><span property="lat">'+value.lat+'</span></td>'+
+			            '<td prefix="geo: https://www.w3.org/2003/01/geo/wgs84_pos#" resource="'+value.id+'"><span property="lon">'+value.lon+'</span></td>'+
+			            '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2019/11/bicycle_stations.owl#" resource="'+value.id+'"><span property="capacity">'+value.capacity+'</span></td>'+
+			        '</tr>';
+			    });
+
+	       $("#bicycleStations").hide();
+	       $("#hospitals").hide();
+	       $("#sncfStations").hide();
+	       $("#busStations").hide();
+	       $("#tramStations").hide();
+	       
+			    $('#metrotbody').html(res);
+	}
+    
+    
 }
 </script>
 
@@ -143,7 +466,10 @@ label.error {
         <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="http://localhost:8080/bicycleSearch">Search more</a>
+        <a class="nav-link" href="http://localhost:8080/bicycleSearch">Search Live Bicycle</a>
+      </li>
+       <li class="nav-item">
+        <a class="nav-link" href="http://localhost:8080/poi">Point of Interest</a>
       </li>
     </ul>
   </div>
@@ -159,10 +485,10 @@ label.error {
             <div class="card-body">
                 <form class = "form-horizontal" id="search-form">
                     <div class="form-group row">
-                        <label for="city" class="col-sm-3 control-label">Select your choice<span
+                        <label for="choice" class="col-sm-3 control-label">Select your choice<span
                                 class="text-danger">*</span></label>
                         <div class="col-sm-7">
-                            <select class="form-control" id="city" name="city" required>
+                            <select class="form-control" id="choice" name="choice" required>
                                 <option value="0">Select your choice</option>
                                 <option value="HOSPITALS">HOSPITALS</option>
                                 <option value="BUSSTATIONS">BUS STATIONS</option>
@@ -189,11 +515,89 @@ label.error {
                             <th>Capacity</th>
                             <th>Available</th>
                             <th>Updated at</th>
-                            <th>More</th>
                             <th>Station IRI</th>
                         </tr>
                         </thead>
-                        <tbody></tbody>
+                        <tbody id="bicycletbody"></tbody>
+                    </table>
+                </div>
+                 <br/>
+                <div class="row" id="hospitals">
+                    <table id="hospitalsTable" class="table table-striped table-bordered dt-responsive nowrap"">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th>Category</th>
+                            <th>Latitude</th>
+                            <th>Longitude</th>
+                            <th>Address</th>
+                            <th>Telephone</th>
+                           
+                            <th>Station IRI</th>
+                        </tr>
+                        </thead>
+                        <tbody id="hospitaltbody"></tbody>
+                    </table>
+                </div>
+                 <br/>
+                <div class="row" id="busStations">
+                    <table id="busTable" class="table table-striped table-bordered dt-responsive nowrap"">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th>Bus Stop</th>
+                            <th>Latitude</th>
+                            <th>Longitude</th>
+                            <th>Bus Number</th>
+                            <th>Station IRI</th>
+                        </tr>
+                        </thead>
+                        <tbody id="bustbody"></tbody>
+                    </table>
+                </div>
+                  <br/>
+                <div class="row" id="tramStations">
+                    <table id="tramsTable" class="table table-striped table-bordered dt-responsive nowrap"">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th>Tram Stop</th>
+                            <th>Latitude</th>
+                            <th>Longitude</th>
+                            <th>Tram Line</th>
+                            <th>Station IRI</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tramtbody"></tbody>
+                    </table>
+                </div>
+                  <br/>
+                <div class="row" id="metroStations">
+                    <table id="metroTable" class="table table-striped table-bordered dt-responsive nowrap"">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th>Metro Stop</th>
+                            <th>Latitude</th>
+                            <th>Longitude</th>
+                            <th>Metro Line</th>
+                            <th>Station IRI</th>
+                        </tr>
+                        </thead>
+                        <tbody id="metrotbody"></tbody>
+                    </table>
+                </div>
+                <div class="row" id="sncfStations">
+                    <table id="sncfTable" class="table table-striped table-bordered dt-responsive nowrap"">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th>SNCFStationName</th>
+                            <th>Latitude</th>
+                            <th>Longitude</th>
+                            <th>Arrival Time</th>
+                            <th>Departure Time</th>
+                            <th>Has Escalator</th>
+                            <th>Has Elevator</th>
+                            <th>Station IRI</th>
+                        </tr>
+                        </thead>
+                        <tbody id="sncftbody"></tbody>
                     </table>
                 </div>
             </div>

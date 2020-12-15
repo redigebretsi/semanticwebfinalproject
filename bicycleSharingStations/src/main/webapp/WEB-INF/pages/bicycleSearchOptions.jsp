@@ -114,17 +114,20 @@ label.error {
 <nav class="navbar navbar-inverse">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#"><h1>Bicycle Sharing Stations</h1></a>
+            <a class="navbar-brand" href="#"><h1>Lyon City Guide</h1></a>
         </div>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
               <li class="nav-item">
-                <a class="nav-link" href="http://localhost:8080/">Home</a>
+                <a class="nav-link" href="http://localhost:8080">Home</a>
               </li>
               <li class="nav-item active">
                 <a class="nav-link" href="#">Search more <span class="sr-only">(current)</span></a>
               </li>
+              <li class="nav-item">
+                 <a class="nav-link" href="http://localhost:8080/poi">Point of Interest</a>
+             </li>
             </ul>
           </div>
         </nav>
@@ -150,12 +153,12 @@ label.error {
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="fromTime" class="col-sm-2 control-label">From Date</label>
+                            <label for="fromTime" class="col-sm-2 control-label">From Time</label>
                             <div class="col-sm-4">
                                 <input  type="time"  min="00:00" max="24:00"  class="form-control"  id="fromTime" name="fromTime"
                                        autocomplete="off">
                             </div>
-                            <label for="toTime" class="col-sm-2 control-label">To Date</label>
+                            <label for="toTime" class="col-sm-2 control-label">To Time</label>
                             <div class="col-sm-4">
                                 <input type="time" min="00:00" max="24:00"  class="form-control" id="toTime" name="toTime"
                                        autocomplete="off">
@@ -163,14 +166,14 @@ label.error {
                         </div>
 
                     <div class="form-group row">
-                        <label for="city" class="col-sm-2 control-label">Select a City<span
+                        <label for="city" class="col-sm-2 control-label">Please select Bicycle Station<span
                                 class="text-danger">*</span></label>
                         <div class="col-sm-7">
                             <select class="form-control" id="city" name="city">
-                                <option value="0">Select a City</option>
-                                <option value="SAINT-ETIENNE">SAINT-ETIENNE</option>
-                                <option value="LYON">LYON</option>
-                                <option value="TOULOUSE">TOULOUSE</option>
+                                <option value="0">Select Bicycle Station</option>
+                                <option value="Bicycle Station">Bicycle Station</option>
+                                <!--option value="LYON">LYON</option>
+                                <option value="TOULOUSE">TOULOUSE</option>  -->
                             </select>
                         </div>
                         <div class="col-sm-2">
