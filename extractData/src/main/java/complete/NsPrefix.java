@@ -9,7 +9,7 @@ public class NsPrefix {
 	private static String cityURIPrefix = "https://schema.org/City";
 	private static String hospitalURIPrefix = "https://schema.org/Hospital";
 	private static String stationsURIPrefix = "https://schema.org/Station";
-	;
+	private static String xsd = "http://www.w3.org/2000/01/rdf-schema/";
 
 	public static String getExNS() {
 		return exNS;
@@ -37,6 +37,9 @@ public class NsPrefix {
 
 	public static String getStationsURIPrefix() {
 		return stationsURIPrefix;
+	}
+	public static String getxsd() {
+		return xsd;
 	}
 
 }

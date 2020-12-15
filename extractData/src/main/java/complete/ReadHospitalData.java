@@ -89,8 +89,8 @@ public class ReadHospitalData {
 			System.out.println(catagorie);
 			
 
-			//hospitalList.add(new Hospital(osm_id.toString(),  name,  emergency,  lat,  lon));
-			
+			hospitalList.add(new Hospital(adresse,  tel_number,  catagorie,  lat,  lon));
+						
 		}
 	}
 

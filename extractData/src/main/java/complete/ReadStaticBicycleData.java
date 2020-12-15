@@ -37,7 +37,7 @@ import org.json.JSONObject;
 public class ReadStaticBicycleData {
 	static String url = "https://api.jcdecaux.com/vls/v1/stations?contract=lyon&&apiKey=b5c059fa1b8e115f157e20cfa797e01b7650f0a7";
 	static List<BicycleStation> stationsList = new ArrayList<BicycleStation>();
-
+;
 	public List<BicycleStation> processData() throws JSONException, IOException {
 		JSONArray stations = readJsonFromUrl(url);
 		processStations(stations);
