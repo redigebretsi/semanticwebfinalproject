@@ -1,6 +1,7 @@
 package complete;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,19 +17,21 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ReadHospitalData {
-	static String file = "C:\\Users\\redig\\Downloads\\Project\\les_etablissements_hospitaliers_franciliens.json";
+	
+	
+	InputStreamReader reader = new InputStreamReader(this.getClass().getResourceAsStream("les_etablissements_hospitaliers_franciliens.json"));
 	static List<Hospital> hospitalList = new ArrayList<Hospital>();
 
 	public List<Hospital> processData() throws JSONException, IOException {
-		JSONArray stations = readJsonFromUrl(file);
+		JSONArray stations = readJsonFromUrl(reader);
 		processStations(stations);
 		return hospitalList;		
 	}
 	
-	public static JSONArray readJsonFromUrl(String url) throws IOException, JSONException {
+	public static JSONArray readJsonFromUrl(InputStreamReader reader) throws IOException, JSONException {
 		
 		try {
-			BufferedReader rd = new BufferedReader(new FileReader(file));
+			BufferedReader rd = new BufferedReader(reader);
 			String jsonText = readAll(rd);
 			JSONArray stations = new JSONArray(jsonText);
 			return stations;
@@ -86,7 +89,7 @@ public class ReadHospitalData {
 			double lat = coordinates.getDouble(0);
 			double lon = coordinates.getDouble(1);
 			
-			System.out.println(catagorie);
+			//System.out.println(catagorie);
 			
 
 			hospitalList.add(new Hospital(adresse,  tel_number,  catagorie,  lat,  lon));

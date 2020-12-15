@@ -6,6 +6,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.security.GeneralSecurityException;
 import java.security.cert.X509Certificate;
 import java.util.List;
@@ -79,7 +82,7 @@ public class CityStaticCreateModel {
 		ReadHospitalData hospitalData = new ReadHospitalData();
 		List<Hospital> hospitalList = hospitalData.processData();
 		appendHospitalstoModel(city, hospitalList);
-		 model.write(System.out, "turtle");
+		// model.write(System.out, "turtle");
 		 saveToFueski();
 	}
 
@@ -111,11 +114,13 @@ public class CityStaticCreateModel {
 	private static void initializeModel() {
 		// TODO Auto-generated method stub
 		model = ModelFactory.createDefaultModel();
+		model.setNsPrefix("schema", NsPrefix.getSchemaNS());
 		model.setNsPrefix("city", NsPrefix.getCityURIPrefix());
 		model.setNsPrefix("hospital", NsPrefix.getHospitalURIPrefix());
 		model.setNsPrefix("station", NsPrefix.getStationsURIPrefix());
 		model.setNsPrefix("onto", NsPrefix.getOntoNS());
 		model.setNsPrefix("xsd", NsPrefix.getxsd());
+		
 
 	}
 
@@ -230,7 +235,7 @@ public class CityStaticCreateModel {
 			model.add(statement_pcapacity);
 			bicyclestation.addLiteral(model.createProperty(NsPrefix.getGeoNS() + "hasLatitude"), station.getLat());
 			bicyclestation.addLiteral(model.createProperty(NsPrefix.getGeoNS() + "hasLongitude"), station.getLon());
-			System.out.println(bicyclestation);
+			//System.out.println(bicyclestation);
 
 		}
 	}
@@ -256,7 +261,7 @@ public class CityStaticCreateModel {
 			Hospital.addProperty(hasLatitude, String.valueOf(hos.getLat()), XSDDatatype.XSDdouble);
 			Hospital.addProperty(hasLongitude, String.valueOf(hos.getLon()), XSDDatatype.XSDdouble);
 			Hospital.addProperty(hascatagorie, String.valueOf(hos.getCatagorie()));
-			System.out.println(Hospital);
+			//System.out.println(Hospital);
 
 		}
 	}
@@ -265,7 +270,8 @@ public class CityStaticCreateModel {
 		try {
 			DatasetAccessor accessor = DatasetAccessorFactory.createHTTP(FUESKI_LOCAL_ENDPOINT);
 			accessor.putModel(model);
-			String url = "C:\\Users\\redig\\Downloads\\Project\\creatmodel.ttl";
+			//OutputStreamWriter writer = new OutputStreamWriter(null, "outTRUE.csv");
+			String url = "creatmodelFull.ttl";
 
 			try {
 				model.write(new FileOutputStream(new File(url)), "TURTLE");

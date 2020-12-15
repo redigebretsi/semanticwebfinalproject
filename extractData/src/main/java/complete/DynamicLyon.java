@@ -35,7 +35,7 @@ import complete.NsPrefix;
  */
 
 public class DynamicLyon {
-	private static final String FUESKI_LOCAL_ENDPOINT = "http://localhost:3030/bicycle_stations/update";
+	private static final String FUESKI_LOCAL_ENDPOINT = "http://localhost:3030/city/update";
 	
 	public static void main(String args[]) throws IOException, JSONException {
 		sslResolve();
@@ -115,6 +115,7 @@ public class DynamicLyon {
 					+ "PREFIX hospital: <https://schema.org/Hospital>  \r\n"
 					+ "PREFIX onto:  <http://www.semanticweb.org/emse/ontologies/2020/11/city.owl#>"
 					+ "PREFIX xsd: <http://www.w3.org/2000/01/rdf-schema/>\r\n"
+					+"PREFIX schema: <http://schema.org/>\r\n"
 					+ "INSERT DATA { <" +  iri + "> onto:hasAvailability [\r\n" 
 					+ "                                            a           onto:Availability; \r\n"
 					+ "					                           onto:updatedDatetime \"" + todayDate + "\"^^xsd:dateTime;\r\n"

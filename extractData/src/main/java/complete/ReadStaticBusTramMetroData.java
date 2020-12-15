@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,12 +19,13 @@ public class ReadStaticBusTramMetroData {
 		return stations;
 	}
 
-	public static List<BTMStations> readCSV() throws IOException, JSONException {
-
-		File file = new File("C:\\Users\\redig\\Downloads\\Project\\tclresult.csv");
+	public List<BTMStations> readCSV() throws IOException, JSONException {
+		
+		InputStreamReader reader = new InputStreamReader(this.getClass().getResourceAsStream("tclresult.csv"));
 		List<BTMStations> stations = new ArrayList<BTMStations>();
 		try {
-			BufferedReader br = new BufferedReader(new FileReader(file));
+			BufferedReader br = new BufferedReader(reader);
+			
 
 			String line = null;
 			while ((line = br.readLine()) != null) {

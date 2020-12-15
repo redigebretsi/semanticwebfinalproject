@@ -34,12 +34,12 @@ public class ReadStaticSNCFData {
 		return stations;
 	}
 
-	public static List<SNCFStation> readCSV() throws IOException, JSONException {
-
-		File file = new File("C:\\Users\\redig\\Downloads\\Project\\outTRUE.csv");
+	public List<SNCFStation> readCSV() throws IOException, JSONException {
+		InputStreamReader reader = new InputStreamReader(this.getClass().getResourceAsStream("outTRUE.csv"));
 		List<SNCFStation> stations = new ArrayList<SNCFStation>();
 		try {
-			BufferedReader br = new BufferedReader(new FileReader(file));
+			BufferedReader br = new BufferedReader(reader);
+			
 
 			String line = null;
 			while ((line = br.readLine()) != null) {
