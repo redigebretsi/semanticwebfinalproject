@@ -108,10 +108,11 @@ public class DynamicLyon {
 
 			String iri = stationURIPrefix + ":LYON:" + ID;
 
-			String query = "PREFIX onto: <http://www.semanticweb.org/emse/ontologies/2019/11/bicycle_stations.owl#>\r\n"
-					+ "PREFIX geo: <https://www.w3.org/2003/01/geo/wgs84_pos#>\r\n"
-					+ "PREFIX schema: <http://schema.org/>\r\n" 
-					+ "prefix xsd: <http://www.w3.org/2001/XMLSchema#> \r\n"
+			String query = "PREFIX city:  <https://schema.org/ity> \r\n"
+					+ "PREFIX station: <https://schema.org/Station> \r\n"
+					+ "PREFIX hospital: <https://schema.org/Hospital>  \r\n"
+					+ "PREFIX onto:  <http://www.semanticweb.org/emse/ontologies/2020/11/city.owl#>"
+					+ "PREFIX xsd: <http://www.w3.org/2000/01/rdf-schema/>\r\n"
 					+ "INSERT DATA { <" +  iri + "> onto:hasAvailability [\r\n" 
 					+ "                                            a           onto:Availability; \r\n"
 					+ "					                           onto:updatedDatetime \"" + todayDate + "\"^^xsd:dateTime;\r\n"

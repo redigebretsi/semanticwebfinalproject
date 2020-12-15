@@ -41,9 +41,9 @@ import org.json.JSONObject;
  * Weather data added for each station 
  */
 public class AddWeather {
-	private static final String FUESKI_LOCAL_ENDPOINT_GET = "http://localhost:3030/bicycle_stations";
-	private static final String FUESKI_LOCAL_ENDPOINT_UPDATE = "http://localhost:3030/bicycle_stations/update";
-	private static String url_part = "https://openweathermap.org/data/2.5/weather?appid=b6907d289e10d714a6e88b30761fae22";
+	private static final String FUESKI_LOCAL_ENDPOINT_GET = "http://localhost:3030/city";
+	private static final String FUESKI_LOCAL_ENDPOINT_UPDATE = "http://localhost:3030/city/update";
+	private static String url_part = "https://openweathermap.org/data/2.5/weather?appid=6eaa88893a7b68dde346b5c0ed4c980f";
 
 	static List<Location> locationsList;
 	
@@ -68,7 +68,7 @@ public class AddWeather {
        //@prefix hospital: <https://schema.org/Hospital> .
        //@prefix onto:  <http://www.semanticweb.org/emse/ontologies/2020/11/city.owl#> .
 	        String query = "PREFIX city:  <https://schema.org/City>\n" +
-	                "PREFIX station: <https://schema.org/Station>>\n" +
+	                "PREFIX station: <https://schema.org/Station>\n" +
 	                "PREFIX xsd:   <http://www.w3.org/2000/01/rdf-schema/>\n" +
 	                "PREFIX hospital: <https://schema.org/Hospital>\n" +
 	                "prefix onto:  <http://www.semanticweb.org/emse/ontologies/2020/11/city.owl#> \n" +
@@ -79,8 +79,8 @@ public class AddWeather {
 	                "  ?city onto:hasStation ?station .\n" +
 	                "  ?station onto:stationName ?stationName .\n" +
 	                "  ?station onto:capacity ?capacity .\n" +
-	                "  ?station geo:lat ?lat .\n" +
-	                "  ?station geo:long ?lon .\n" +
+	                "  ?station onto:lat ?lat .\n" +
+	                "  ?station onto:long ?lon .\n" +
 	                "  ?station onto:hasAvailability ?availability .\n" +
 	                "  ?availability onto:updatedDatetime ?updatedDateTime .\n" +
 	                "  ?availability onto:availableBikes ?availableBikes .  \n" +
