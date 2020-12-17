@@ -6,10 +6,8 @@ public class NsPrefix {
 	private static String geoNS = "https://www.w3.org/2003/01/geo/wgs84_pos#";
 	private static String ontoNS = "http://www.semanticweb.org/emse/ontologies/2020/11/city.owl#";
 	private static String schemaNS = "http://schema.org/";
-	private static String cityURIPrefix = "https://schema.org/City";
-	private static String hospitalURIPrefix = "https://schema.org/Hospital";
-	private static String stationsURIPrefix = "https://schema.org/Station";
-	private static String xsd = "http://www.w3.org/2000/01/rdf-schema/";
+	
+	private static String rdf = "http://www.w3.org/2000/01/rdf-schema/";
 
 	public static String getExNS() {
 		return exNS;
@@ -27,19 +25,9 @@ public class NsPrefix {
 		return schemaNS;
 	}
 
-	public static String getCityURIPrefix() {
-		return cityURIPrefix;
-	}
-
-	public static String getHospitalURIPrefix() {
-		return hospitalURIPrefix;
-	}
-
-	public static String getStationsURIPrefix() {
-		return stationsURIPrefix;
-	}
-	public static String getxsd() {
-		return xsd;
+	
+	public static String getrdf() {
+		return rdf;
 	}
 
 }

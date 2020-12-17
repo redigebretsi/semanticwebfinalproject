@@ -98,7 +98,7 @@ public class StaticLyon {
 	}
 
 	private static void processStations() {
-		System.out.println(stations.length());
+		//System.out.println(stations.length());
 		for (Object station : stations) {
 			JSONObject stationJson = (JSONObject) station;
 			String ID = (String) stationJson.get("idstation");

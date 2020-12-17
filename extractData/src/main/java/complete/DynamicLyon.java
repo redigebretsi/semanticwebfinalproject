@@ -40,9 +40,8 @@ public class DynamicLyon {
 	public static void main(String args[]) throws IOException, JSONException {
 		sslResolve();
 		String url = "https://download.data.grandlyon.com/wfs/rdata?SERVICE=WFS&VERSION=1.1.0&outputformat=GEOJSON&request=GetFeature&typename=jcd_jcdecaux.jcdvelov&SRSNAME=urn:ogc:def:crs:EPSG::4171";
-		JSONObject json = readJsonFromUrl(url);
-		JSONArray fstations = (JSONArray) json.get("features");
-		processStationDyna(fstations);
+		JSONObject json = readJsonFromUrl(url);		
+		processStationDyna(json);
 	}
 	
 	public static void sslResolve() {
@@ -76,11 +75,12 @@ public class DynamicLyon {
 			BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
 			String jsonText = readAll(rd);
 			JSONObject json = new JSONObject(jsonText);
+			System.out.println(jsonText);
 			return json;
 		} finally {
 			is.close();
 		}
-	}
+			}
 
 	private static String readAll(Reader rd) throws IOException {
 		StringBuilder sb = new StringBuilder();
@@ -91,13 +91,14 @@ public class DynamicLyon {
 		return sb.toString();
 	}
 
-	private static void processStationDyna(JSONArray fstations) {
+	private static void processStationDyna(JSONObject json) {
 
-		String stationURIPrefix = NsPrefix.getOntoNS() + "Station";		
+		String stationURIPrefix = NsPrefix.getSchemaNS() + "Station";	
+		//System.out.println(stationURIPrefix);
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		Date today = new Date();
 		String todayDate = formatter.format(today);
-		
+		JSONArray fstations = (JSONArray) json.get("features");
 		for (Object station : fstations) {
 			JSONObject stationJson = (JSONObject) station;
 			JSONObject properties=(JSONObject) stationJson.get("properties");
@@ -110,11 +111,10 @@ public class DynamicLyon {
 
 			String iri = stationURIPrefix + ":LYON:" + ID;
 
-			String query = "PREFIX city:  <https://schema.org/ity> \r\n"
-					+ "PREFIX station: <https://schema.org/Station> \r\n"
-					+ "PREFIX hospital: <https://schema.org/Hospital>  \r\n"
-					+ "PREFIX onto:  <http://www.semanticweb.org/emse/ontologies/2020/11/city.owl#>"
-					+ "PREFIX xsd: <http://www.w3.org/2000/01/rdf-schema/>\r\n"
+			String query = "PREFIX schema: <http://schema.org/> \r\n"
+					+ "PREFIX geo:   <https://www.w3.org/2003/01/geo/wgs84_pos#> \r\n"
+					+ "PREFIX xsd:   <http://www.w3.org/2000/01/rdf-schema/> \r\n"
+					+ "PREFIX onto:  <http://www.semanticweb.org/emse/ontologies/2020/11/city.owl#> "
 					+"PREFIX schema: <http://schema.org/>\r\n"
 					+ "INSERT DATA { <" +  iri + "> onto:hasAvailability [\r\n" 
 					+ "                                            a           onto:Availability; \r\n"
