@@ -21,52 +21,23 @@ public class CityGuideService {
     public List <BicycleStation> findBicycleStation() {
 
         List<BicycleStation> stationsList = new ArrayList<BicycleStation>();
-//        String query = "PREFIX onto: <http://www.semanticweb.org/emse/ontologies/2019/11/bicycle_stations.owl#>\n" +
-//                "PREFIX geo: <https://www.w3.org/2003/01/geo/wgs84_pos#>\n" +
-//                "PREFIX schema: <http://schema.org/>\n" +
-//                "PREFIX ont: <http://purl.org/net/ns/ontology-annot#>\n" +
-//                "prefix xsd: <http://www.w3.org/2001/XMLSchema#> \n" +
-//                "SELECT ?stationName ?city ?station ?capacity ?lat ?lon ?updatedDateTime ?availableBikes\n" +
-//                "WHERE {\n" +
-//                "  ?city onto:cityName ?cityName .\n" +
-//                "  ?city onto:hasStation ?station .\n" +
-//                "  ?station onto:stationName ?stationName .\n" +
-//                "  ?station onto:capacity ?capacity .\n" +
-//                "  ?station geo:lat ?lat .\n" +
-//                "  ?station geo:long ?lon .\n" +
-//                "  ?station onto:hasAvailability ?availability .\n" +
-//                "  ?availability onto:updatedDatetime ?updatedDateTime .\n" +
-//                "  ?availability onto:availableBikes ?availableBikes .\n" +
-//                "  FILTER (?cityName = \""+cname+ "\")\n" +
-//                "  }ORDER BY ?stationName   ";
 
-        String query = "PREFIX onto: <http://www.semanticweb.org/emse/ontologies/2020/11/city.owl#>\n" +
-                "PREFIX geo: <https://www.w3.org/2003/01/geo/wgs84_pos#>\n" +
-                "PREFIX schema: <http://schema.org/>\n" +
-                "PREFIX ont: <http://purl.org/net/ns/ontology-annot#>\n" +
-                "prefix xsd: <http://www.w3.org/2001/XMLSchema#> \n" +
-                "\n" +
-                "SELECT ?stationName ?city ?station ?capacity ?lat ?lon ?updatedDateTime ?availableBikes\n" +
-                "WHERE {\n" +
-                "  ?city onto:cityName ?cityName .\n" +
-                "  ?city onto:hasStation ?station .\n" +
-                "  ?station onto:stationName ?stationName .\n" +
-                "  ?station onto:capacity ?capacity .\n" +
-                "  ?station geo:lat ?lat .\n" +
-                "  ?station geo:long ?lon .\n" +
-                "  ?station onto:hasAvailability ?availability .\n" +
-                "  ?availability onto:updatedDatetime ?updatedDateTime .\n" +
-                "  ?availability onto:availableBikes ?availableBikes .  \n" +
-                "  {SELECT ?station (MAX(?dt)  AS ?updatedDateTime)\n" +
-                "    WHERE {\n" +
-                "      ?city onto:cityName ?cityName .\n" +
-                "      ?city onto:hasStation ?station .\n" +
-                "      ?station onto:hasAvailability ?ava .\n" +
-                "      ?ava onto:updatedDatetime ?dt .\n" +
-                "      ?ava onto:availableBikes ?availableBikes .\n" +
-                "    } GROUP BY ?station\n" +
-                "  }\n" +
-                "}ORDER BY ?stationName   ";
+
+        String query = "PREFIX schema: <http://schema.org/> \r\n" + 
+        		"PREFIX geo:   <https://www.w3.org/2003/01/geo/wgs84_pos#> \r\n" + 
+        		"PREFIX rdf:   <http://www.w3.org/2000/01/rdf-schema/> \r\n" + 
+        		"PREFIX onto:  <http://www.semanticweb.org/emse/ontologies/2020/11/city.owl#>\r\n" + 
+        		"PREFIX ont: <http://purl.org/net/ns/ontology-annot#>\r\n" + 
+        		"\r\n" + 
+        		"SELECT ?stopname  ?lat ?lon ?capacity \r\n" + 
+        		"WHERE{\r\n" + 
+        		" \r\n" + 
+        		"  ?b onto:hasName ?stopname.\r\n" + 
+        		"  ?b geo:Lat ?lat .\r\n" + 
+        		"  ?b geo:Long ?lon .\r\n" + 
+        		"  ?b onto:hascapacity ?capacity .\r\n" + 
+        		"  \r\n" + 
+        		"}";
 
 
         Query qu = QueryFactory.create(query);
@@ -76,12 +47,12 @@ public class CityGuideService {
         while (results.hasNext()) {
             QuerySolution qs = results.next();
             Resource stationIRI = (Resource) qs.get("station");
-            RDFNode name = qs.get("stationName");
+            RDFNode name = qs.get("stopname");
             RDFNode lat = qs.get("lat");
             RDFNode lon = qs.get("lon");
             RDFNode capacity = qs.get("capacity");
-            RDFNode availableBikes = qs.get("availableBikes");
-            RDFNode updatedDateTime = qs.get("updatedDateTime");
+//            RDFNode availableBikes = qs.get("availableBikes");
+//            RDFNode updatedDateTime = qs.get("updatedDateTime");
 
             String lIRI = stationIRI.getURI();
             System.out.println(lIRI);
@@ -89,9 +60,9 @@ public class CityGuideService {
             String lLat = lat.asLiteral().getString();
             String lLon = lon.asLiteral().getString();
             String lCapacity = capacity.asLiteral().getString();
-            String lAvailableBikes = availableBikes.asLiteral().getString();
-            String lLocalUpdatedDateTime = updatedDateTime.asLiteral().getString();
-            stationsList.add(new BicycleStation(lIRI, lName, lLat, lLon, lCapacity, lAvailableBikes, lLocalUpdatedDateTime));
+//            String lAvailableBikes = availableBikes.asLiteral().getString();
+//            String lLocalUpdatedDateTime = updatedDateTime.asLiteral().getString();
+            stationsList.add(new BicycleStation( lName, lLat, lLon, lCapacity));
         }
         return stationsList;
     }
@@ -101,19 +72,17 @@ public class CityGuideService {
         List<Hospital> hospitalList = new ArrayList<Hospital>();
 
 
-        String query = "PREFIX http: <http://www.w3.org/2011/http#>\r\n" + 
-        		"PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>\r\n" + 
-        		"PREFIX onto: <http://www.semanticweb.org/emse/ontologies/2020/11/city.owl#>\r\n" + 
-        		"PREFIX schema: <http://schema.org/>\r\n" + 
+        String query = "PREFIX schema: <http://schema.org/> \r\n" + 
+        		"PREFIX geo:   <https://www.w3.org/2003/01/geo/wgs84_pos#> \r\n" + 
+        		"PREFIX rdf:   <http://www.w3.org/2000/01/rdf-schema/> \r\n" + 
+        		"PREFIX onto:  <http://www.semanticweb.org/emse/ontologies/2020/11/city.owl#>\r\n" + 
         		"PREFIX ont: <http://purl.org/net/ns/ontology-annot#>\r\n" + 
-        		"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\r\n" + 
         		"\r\n" + 
         		"SELECT ?category  ?lat ?lon ?address ?telephone ?hospital\r\n" + 
-        		"WHERE {\r\n" + 
-        		"  ?hospital a onto:Hospital.\r\n" + 
+        		"WHERE{\r\n" + 
         		"  ?hospital onto:catagorie ?category.\r\n" + 
-        		"  ?hospital onto:hasLatitude ?lat .\r\n" + 
-        		"  ?hospital onto:hasLongitude ?lon .\r\n" + 
+        		"  ?hospital geo:Lat ?lat .\r\n" + 
+        		"  ?hospital geo:Long ?lon .\r\n" + 
         		"  ?hospital onto:tel_number ?telephone .\r\n" + 
         		"  ?hospital onto:adresse ?address.\r\n" + 
         		"}";
@@ -148,40 +117,70 @@ public class CityGuideService {
    
     public List <BTMStations> findBTMmodel(String type) {
     	 List<BTMStations> btmList = new ArrayList<BTMStations>();
-    	if(type=="BUSSTATIONS") {
+         System.out.println("888888cccccccccccc//======="+type);
+    	 String query = "";
+    	if(type.equals("BUSSTATIONS")) {
+    		 query = "PREFIX schema: <http://schema.org/> \r\n" + 
+    				"PREFIX geo:   <https://www.w3.org/2003/01/geo/wgs84_pos#> \r\n" + 
+    				"PREFIX rdf:   <http://www.w3.org/2000/01/rdf-schema/> \r\n" + 
+    				"PREFIX onto:  <http://www.semanticweb.org/emse/ontologies/2020/11/city.owl#>\r\n" + 
+    				"PREFIX ont: <http://purl.org/net/ns/ontology-annot#>\r\n" + 
+    				"\r\n" + 
+    				"SELECT ?stopName ?id ?lat ?lon ?busNumber \r\n" + 
+    				"WHERE{\r\n" + 
+    				"  ?bus onto:hasID ?id .\r\n" + 
+    				"  ?bus onto:hasName ?stopName.\r\n" + 
+    				"  ?bus geo:Lat ?lat .\r\n" + 
+    				"  ?bus geo:Long ?lon .\r\n" + 
+    				"  ?bus onto:hasBusNumber ?busNumber .\r\n" + 
+    				"  \r\n" + 
+    				"}";
+
+    		
+    	}
+    	else if(type.equals("TRAMSTATIONS") ) {
+    	       System.out.println("tran==========");
+    		 query =    "PREFIX schema: <http://schema.org/> \r\n" + 
+    				"PREFIX geo:   <https://www.w3.org/2003/01/geo/wgs84_pos#> \r\n" + 
+    				"PREFIX rdf:   <http://www.w3.org/2000/01/rdf-schema/> \r\n" + 
+    				"PREFIX onto:  <http://www.semanticweb.org/emse/ontologies/2020/11/city.owl#>\r\n" + 
+    				"PREFIX ont: <http://purl.org/net/ns/ontology-annot#>\r\n" + 
+    				"\r\n" + 
+    				"SELECT ?stopName ?id ?lat ?lon ?tramNumber \r\n" + 
+    				"WHERE{\r\n" + 
+    				"  ?t onto:hasID ?id .\r\n" + 
+    				"  ?t onto:hasName ?stopName.\r\n" + 
+    				"  ?t geo:Lat ?lat .\r\n" + 
+    				"  ?t geo:Long ?lon .\r\n" + 
+    				"  ?t onto:hasTramNumber ?tramNumber .\r\n" + 
+    				"  \r\n" + 
+    				"}";
+    	       System.out.println("gggg==========");
+    	       System.out.println(query);
+    		
+    	}
+    	else if(type.equals("METROSTATIONS")) {
+    		 query =    "PREFIX schema: <http://schema.org/> \r\n" + 
+    				"PREFIX geo:   <https://www.w3.org/2003/01/geo/wgs84_pos#> \r\n" + 
+    				"PREFIX rdf:   <http://www.w3.org/2000/01/rdf-schema/> \r\n" + 
+    				"PREFIX onto:  <http://www.semanticweb.org/emse/ontologies/2020/11/city.owl#>\r\n" + 
+    				"PREFIX ont: <http://purl.org/net/ns/ontology-annot#>\r\n" + 
+    				"\r\n" + 
+    				"SELECT ?stopName ?id ?lat ?lon ?metroNumber \r\n" + 
+    				"WHERE{\r\n" + 
+    				"  ?metro onto:hasID ?id .\r\n" + 
+    				"  ?metro onto:hasName ?stopName.\r\n" + 
+    				"  ?metro geo:Lat ?lat .\r\n" + 
+    				"  ?metro geo:Long ?lon .\r\n" + 
+    				"  ?metro onto:hasMetroNumber ?metroNumber .\r\n" + 
+    				"  \r\n" + 
+    				"}";
     		
     	}
 
-       
-
-
-        String query = "PREFIX onto: <http://www.semanticweb.org/emse/ontologies/2019/11/bicycle_stations.owl#>\n" +
-                "PREFIX geo: <https://www.w3.org/2003/01/geo/wgs84_pos#>\n" +
-                "PREFIX schema: <http://schema.org/>\n" +
-                "PREFIX ont: <http://purl.org/net/ns/ontology-annot#>\n" +
-                "prefix xsd: <http://www.w3.org/2001/XMLSchema#> \n" +
-                "\n" +
-                "SELECT ?stationName ?city ?station ?capacity ?lat ?lon ?updatedDateTime ?availableBikes\n" +
-                "WHERE {\n" +
-                "  ?city onto:cityName ?cityName .\n" +
-                "  ?city onto:hasStation ?station .\n" +
-                "  ?station onto:stationName ?stationName .\n" +
-                "  ?station onto:capacity ?capacity .\n" +
-                "  ?station geo:lat ?lat .\n" +
-                "  ?station geo:long ?lon .\n" +
-                "  ?station onto:hasAvailability ?availability .\n" +
-                "  ?availability onto:updatedDatetime ?updatedDateTime .\n" +
-                "  ?availability onto:availableBikes ?availableBikes .  \n" +
-                "  {SELECT ?station (MAX(?dt)  AS ?updatedDateTime)\n" +
-                "    WHERE {\n" +
-                "      ?city onto:cityName ?cityName .\n" +
-                "      ?city onto:hasStation ?station .\n" +
-                "      ?station onto:hasAvailability ?ava .\n" +
-                "      ?ava onto:updatedDatetime ?dt .\n" +
-                "      ?ava onto:availableBikes ?availableBikes .\n" +
-                "    } GROUP BY ?station\n" +
-                "  }\n" +
-                "}ORDER BY ?stationName   ";
+       System.out.println("88888888888==========");
+       System.out.println(query);
+       System.out.println("88888888888==========");
 
 
         Query qu = QueryFactory.create(query);
@@ -191,23 +190,33 @@ public class CityGuideService {
         while (results.hasNext()) {
             QuerySolution qs = results.next();
             Resource stationIRI = (Resource) qs.get("station");
-            RDFNode name = qs.get("stationName");
+            RDFNode id = qs.get("id");
+            RDFNode name = qs.get("stopName");
             RDFNode lat = qs.get("lat");
             RDFNode lon = qs.get("lon");
-            RDFNode capacity = qs.get("capacity");
-            RDFNode availableBikes = qs.get("availableBikes");
-            RDFNode updatedDateTime = qs.get("updatedDateTime");
-
-            String lIRI = stationIRI.getURI();
-            System.out.println(lIRI);
-            String ID = availableBikes.asLiteral().getString();//TODO modifications
+            String numb="";
+            if(type.equals("BUSSTATIONS")) {
+                RDFNode transportNumber = qs.get("busNumber");  
+                numb = transportNumber.asLiteral().getString();//TODO modifications
+            }
+            if(type.equals("TRAMSTATIONS")) {
+                RDFNode transportNumber = qs.get("tramNumber");  
+                numb = transportNumber.asLiteral().getString();//TODO modifications
+            }
+            if(type.equals("METROSTATIONS")) {
+                RDFNode transportNumber = qs.get("metroNumber");    
+                 numb = transportNumber.asLiteral().getString();//TODO modifications
+            }
+           
+//
+//            String lIRI = stationIRI.getURI();
+//            System.out.println(lIRI);
+            String ID = id.asLiteral().getString();//TODO modifications
             String nam = name.asLiteral().getString();
             double latitude = lat.asLiteral().getDouble();
-            double longitude = lon.asLiteral().getDouble();
-            String numb = capacity.asLiteral().getString();//TODO modifications
-            String updatedtime = updatedDateTime.asLiteral().getString();//TODO modifications
+            double longitude = lon.asLiteral().getDouble();          
             
-            btmList.add(new BTMStations( ID, nam,  latitude,  longitude, numb, updatedtime));
+            btmList.add(new BTMStations( ID, nam,  latitude,  longitude, numb));
         }
         return btmList;
     }

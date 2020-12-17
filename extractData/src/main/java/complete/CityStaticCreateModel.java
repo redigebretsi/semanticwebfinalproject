@@ -60,9 +60,9 @@ public class CityStaticCreateModel {
 		Resource bStation = model.createResource();
 		city.addProperty(hasa, bStation);
 			
-		  ReadStaticSNCFData sncfData = new ReadStaticSNCFData(); 
-		  List<SNCFStation> stations = sncfData.processData();
-		  appendSNCFtoModel(bStation, stations);
+		 // ReadStaticSNCFData sncfData = new ReadStaticSNCFData(); 
+		 // List<SNCFStation> stations = sncfData.processData();
+	//	  appendSNCFtoModel(bStation, stations);
 		  
 		  ReadStaticBusTramMetroData btmData = new ReadStaticBusTramMetroData();
 		  List<BTMStations> btmstations = btmData.processData();
@@ -119,40 +119,40 @@ public class CityStaticCreateModel {
 
 	}
 
-	private static void appendSNCFtoModel(Resource blank, List<SNCFStation> stations) {
-
-		Property hasSNFstation = model.createProperty(NsPrefix.getOntoNS() + "hasSNFstation");
-
-		Property hasId = model.createProperty(NsPrefix.getOntoNS() + "hasID");
-		Property hasName = model.createProperty(NsPrefix.getOntoNS() + "hasName");
-		Property hasLatitude = model.createProperty(NsPrefix.getGeoNS() + "Lat");
-		Property hasLongtiude = model.createProperty(NsPrefix.getGeoNS() + "Long");
-		Property hasEscalator = model.createProperty(NsPrefix.getOntoNS() + "hasEscalator");
-		Property hasAscenseur = model.createProperty(NsPrefix.getOntoNS() + "hasAscenseur");
-		Property hasTrain = model.createProperty(NsPrefix.getOntoNS() + "hasTrain");
-		Property hasArrival = model.createProperty(NsPrefix.getOntoNS() + "hasArrival");
-		Property hasDeprature = model.createProperty(NsPrefix.getOntoNS() + "hasDeprature");
-
-		for (SNCFStation station : stations) {
-			Resource trainstation = model
-					.createResource(NsPrefix.getOntoNS() + "SNCFstation/" + station.getID().replaceAll(" ", "_"));
-			Resource train = model.createResource();
-			blank.addProperty(hasSNFstation, trainstation);
-			trainstation.addProperty(RDF.type, NsPrefix.getSchemaNS()+ "SNCFStation");
-			trainstation.addProperty(hasId, station.getID());
-			trainstation.addProperty(hasName, station.getName());
-			trainstation.addProperty(hasLatitude, String.valueOf(station.getLat()), XSDDatatype.XSDdouble);
-			trainstation.addProperty(hasLongtiude, String.valueOf(station.getLon()), XSDDatatype.XSDdouble);
-			trainstation.addProperty(hasEscalator, String.valueOf(station.isEscalator()), XSDDatatype.XSDboolean);
-			trainstation.addProperty(hasAscenseur, String.valueOf(station.isAscenseur()), XSDDatatype.XSDboolean);
-			trainstation.addProperty(hasTrain, train);
-
-			train.addProperty(hasArrival, String.valueOf(station.getArrival()));
-			train.addProperty(hasDeprature, String.valueOf(station.getDepart()));
-
-		}
-
-	}
+//	private static void appendSNCFtoModel(Resource blank, List<SNCFStation> stations) {
+//
+//		Property hasSNFstation = model.createProperty(NsPrefix.getOntoNS() + "hasSNFstation");
+//
+//		Property hasId = model.createProperty(NsPrefix.getOntoNS() + "hasID");
+//		Property hasName = model.createProperty(NsPrefix.getOntoNS() + "hasName");
+//		Property hasLatitude = model.createProperty(NsPrefix.getGeoNS() + "Lat");
+//		Property hasLongtiude = model.createProperty(NsPrefix.getGeoNS() + "Long");
+//		Property hasEscalator = model.createProperty(NsPrefix.getOntoNS() + "hasEscalator");
+//		Property hasAscenseur = model.createProperty(NsPrefix.getOntoNS() + "hasAscenseur");
+//		Property hasTrain = model.createProperty(NsPrefix.getOntoNS() + "hasTrain");
+//		Property hasArrival = model.createProperty(NsPrefix.getOntoNS() + "hasArrival");
+//		Property hasDeprature = model.createProperty(NsPrefix.getOntoNS() + "hasDeprature");
+//
+//		for (SNCFStation station : stations) {
+//			Resource trainstation = model
+//					.createResource(NsPrefix.getOntoNS() + "SNCFstation/" + station.getID().replaceAll(" ", "_"));
+//			Resource train = model.createResource();
+//			blank.addProperty(hasSNFstation, trainstation);
+//			trainstation.addProperty(RDF.type, NsPrefix.getSchemaNS()+ "SNCFStation");
+//			trainstation.addProperty(hasId, station.getID());
+//			trainstation.addProperty(hasName, station.getName());
+//			trainstation.addProperty(hasLatitude, String.valueOf(station.getLat()), XSDDatatype.XSDdouble);
+//			trainstation.addProperty(hasLongtiude, String.valueOf(station.getLon()), XSDDatatype.XSDdouble);
+//			trainstation.addProperty(hasEscalator, String.valueOf(station.isEscalator()), XSDDatatype.XSDboolean);
+//			trainstation.addProperty(hasAscenseur, String.valueOf(station.isAscenseur()), XSDDatatype.XSDboolean);
+//			trainstation.addProperty(hasTrain, train);
+//
+//			train.addProperty(hasArrival, String.valueOf(station.getArrival()));
+//			train.addProperty(hasDeprature, String.valueOf(station.getDepart()));
+//
+//		}
+//
+//	}
 
 	private static void appendBTMStoModel(Resource blank, List<BTMStations> stations) {
 

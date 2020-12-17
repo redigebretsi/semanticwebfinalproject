@@ -7,15 +7,12 @@ public class BTMStations {
 	private double lon;
 	private String numb;
 
-	private String updatedtime;
-
-	public BTMStations(String ID, String name, double lat, double lon, String numb, String updatedtime) {
+	public BTMStations(String ID, String name, double lat, double lon, String numb) {
 		this.ID = ID;	
 		this.name= name;
 		this.lat=lat;
 		this.lon= lon;
 		this.numb = numb;
-		this.updatedtime = updatedtime;
 		}
 
 	public String getID() {
@@ -56,14 +53,6 @@ public class BTMStations {
 
 	public void setNumber(String busNumber) {
 		this.numb = numb;
-	}
-
-	public String getUpdatedtime() {
-		return updatedtime;
-	}
-
-	public void setUpdatedtime(String updatedtime) {
-		this.updatedtime = updatedtime;
 	}
 	
 

@@ -34,9 +34,9 @@ public class SearchController {
         List<BicycleStation> bicycleStation = cityGuideService.findBicycleStation();
         return new ResponseEntity<List<BicycleStation>>(bicycleStation, HttpStatus.OK);
     }
-    @RequestMapping("/api/btmsearch/")
+    @RequestMapping("/api/btmsearch/{type}")
     public ResponseEntity<List<BTMStations>> findBTMmodel(@PathVariable String type) {
-        //System.out.println("cname::" + cname);
+        System.out.println("cname::" + type);
         List<BTMStations> btmStation = cityGuideService.findBTMmodel(type);
         return new ResponseEntity<List<BTMStations>>(btmStation, HttpStatus.OK);
     }

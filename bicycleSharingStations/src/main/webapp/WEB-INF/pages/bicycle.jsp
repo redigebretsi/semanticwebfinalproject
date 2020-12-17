@@ -54,7 +54,8 @@
                          
                               {width: "80px", "targets": [2]},
                               {width: "320px", "targets": [3]},
-                              {className: "text-center", "targets": [1, 2, 3]}
+                              {className: "text-center", "targets": [1, 2, 3]},
+                              {"visible": false, "targets":[4]}
                              
                           ],
                           "order": [
@@ -74,7 +75,8 @@
                                     {width: "320px", "targets": [0]},
                                     {width: "100px", "targets": [1,3]},
                                     {width: "80px", "targets": [2]},
-                                    {className: "text-center", "targets": [1, 2, 3]}
+                                    {className: "text-center", "targets": [1, 2, 3]},
+                                    {"visible": false, "targets":[3]}
                                    
                                 ],
                                 "order": [
@@ -94,7 +96,8 @@
                                     	  {width: "320px", "targets": [0]},
                                           {width: "100px", "targets": [1,3]},
                                           {width: "80px", "targets": [2]},
-                                          {className: "text-center", "targets": [1, 2, 3]}
+                                          {className: "text-center", "targets": [1, 2, 3]},
+                                          {"visible": false, "targets":[3]}
                                       ],
                                       "order": [
                                           [0, "asc"]
@@ -114,7 +117,8 @@
                                          	  {width: "320px", "targets": [0]},
                                                {width: "100px", "targets": [1,3]},
                                                {width: "80px", "targets": [2]},
-                                               {className: "text-center", "targets": [1, 2, 3]}
+                                               {className: "text-center", "targets": [1, 2, 3]},
+                                               {"visible": false, "targets":[3]}
                                            ],
                                            "order": [
                                                [0, "asc"]
@@ -146,7 +150,6 @@
 
 
         $ ("#search-form").submit(function(event){
-        	alert("Clicked");
            // stop submit the form, we will post it manually.
             event.preventDefault();
             $(".error").remove();
@@ -259,11 +262,11 @@ function setHospitalTableRows(data){
    // console.log(value);
         res +=
         '<tr>'+
-            '<td vocab="https://opendata.paris.fr/api/records/1.0/search/?dataset=velib-emplacement-des-stations" resource="'+value.id+'" typeof="PublicBicycleStation"><span property="stationName">'+value.name+'</span></td>'+
+            '<td vocab="https://opendata.paris.fr/api/records/1.0/search/?dataset=velib-emplacement-des-stations" resource="'+value.id+'" typeof="PublicBicycleStation"><span property="hospitalcategory">'+value.catagorie+'</span></td>'+
             '<td prefix="geo: https://www.w3.org/2003/01/geo/wgs84_pos#" resource="'+value.id+'"><span property="lat">'+value.lat+'</span></td>'+
             '<td prefix="geo: https://www.w3.org/2003/01/geo/wgs84_pos#" resource="'+value.id+'"><span property="lon">'+value.lon+'</span></td>'+
-            '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2019/11/bicycle_stations.owl#" resource="'+value.id+'"><span property="capacity">'+value.capacity+'</span></td>'+
-            '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2019/11/bicycle_stations.owl#" resource="'+value.id+'"><span property="availableBikes">'+value.availableBikes+'</span></td>'+
+            '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2019/11/bicycle_stations.owl#" resource="'+value.id+'"><span property="capacity">'+value.adresse+'</span></td>'+
+            '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2019/11/bicycle_stations.owl#" resource="'+value.id+'"><span property="availableBikes">'+value.tel_number+'</span></td>'+
         '</tr>';
     });
 
@@ -283,7 +286,7 @@ function  sncf(){
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: "/api/hospitalsearch/",
+        url: "/api/sncfsearch/",
         dataType: 'json',
         cache: false,
         timeout: 600000,
@@ -340,12 +343,12 @@ function btm(type){
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: "/api/hospitalsearch/"+choice,
+        url: "/api/btmsearch/"+choice,
         dataType: 'json',
         cache: false,
         timeout: 600000,
-        success: function (choice,data) {
-        	setBTMTableRows(data);
+        success: function (data) {
+        	setBTMTableRows(choice,data);
             $("#btn-search").prop("disabled", false);
             //$('#loadingModal').modal('hide');
         },
@@ -367,7 +370,7 @@ function setBTMTableRows(choice,data){
     		            '<td vocab="https://opendata.paris.fr/api/records/1.0/search/?dataset=velib-emplacement-des-stations" resource="'+value.id+'" typeof="PublicBicycleStation"><span property="stationName">'+value.name+'</span></td>'+
     		            '<td prefix="geo: https://www.w3.org/2003/01/geo/wgs84_pos#" resource="'+value.id+'"><span property="lat">'+value.lat+'</span></td>'+
     		            '<td prefix="geo: https://www.w3.org/2003/01/geo/wgs84_pos#" resource="'+value.id+'"><span property="lon">'+value.lon+'</span></td>'+
-    		            '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2019/11/bicycle_stations.owl#" resource="'+value.id+'"><span property="capacity">'+value.capacity+'</span></td>'+
+    		            '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2019/11/bicycle_stations.owl#" resource="'+value.id+'"><span property="capacity">'+value.number+'</span></td>'+
     		        '</tr>';
     		    });
 
@@ -387,7 +390,7 @@ function setBTMTableRows(choice,data){
 			            '<td vocab="https://opendata.paris.fr/api/records/1.0/search/?dataset=velib-emplacement-des-stations" resource="'+value.id+'" typeof="PublicBicycleStation"><span property="stationName">'+value.name+'</span></td>'+
 			            '<td prefix="geo: https://www.w3.org/2003/01/geo/wgs84_pos#" resource="'+value.id+'"><span property="lat">'+value.lat+'</span></td>'+
 			            '<td prefix="geo: https://www.w3.org/2003/01/geo/wgs84_pos#" resource="'+value.id+'"><span property="lon">'+value.lon+'</span></td>'+
-			            '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2019/11/bicycle_stations.owl#" resource="'+value.id+'"><span property="capacity">'+value.capacity+'</span></td>'+
+			            '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2019/11/bicycle_stations.owl#" resource="'+value.id+'"><span property="capacity">'+value.number+'</span></td>'+
 			        '</tr>';
 			    });
 
@@ -407,7 +410,7 @@ function setBTMTableRows(choice,data){
 			            '<td vocab="https://opendata.paris.fr/api/records/1.0/search/?dataset=velib-emplacement-des-stations" resource="'+value.id+'" typeof="PublicBicycleStation"><span property="stationName">'+value.name+'</span></td>'+
 			            '<td prefix="geo: https://www.w3.org/2003/01/geo/wgs84_pos#" resource="'+value.id+'"><span property="lat">'+value.lat+'</span></td>'+
 			            '<td prefix="geo: https://www.w3.org/2003/01/geo/wgs84_pos#" resource="'+value.id+'"><span property="lon">'+value.lon+'</span></td>'+
-			            '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2019/11/bicycle_stations.owl#" resource="'+value.id+'"><span property="capacity">'+value.capacity+'</span></td>'+
+			            '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2019/11/bicycle_stations.owl#" resource="'+value.id+'"><span property="capacity">'+value.number+'</span></td>'+
 			        '</tr>';
 			    });
 
