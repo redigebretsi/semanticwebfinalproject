@@ -54,8 +54,8 @@ public class CityGuideService {
 //            RDFNode availableBikes = qs.get("availableBikes");
 //            RDFNode updatedDateTime = qs.get("updatedDateTime");
 
-            String lIRI = stationIRI.getURI();
-            System.out.println(lIRI);
+            //String lIRI = stationIRI.getURI();
+            //System.out.println(lIRI);
             String lName = name.asLiteral().getString();
             String lLat = lat.asLiteral().getString();
             String lLon = lon.asLiteral().getString();
@@ -225,32 +225,26 @@ public class CityGuideService {
         List<SNCFStations> sncfList = new ArrayList<SNCFStations>();
 
 
-        String query = "PREFIX onto: <http://www.semanticweb.org/emse/ontologies/2019/11/bicycle_stations.owl#>\n" +
-                "PREFIX geo: <https://www.w3.org/2003/01/geo/wgs84_pos#>\n" +
-                "PREFIX schema: <http://schema.org/>\n" +
-                "PREFIX ont: <http://purl.org/net/ns/ontology-annot#>\n" +
-                "prefix xsd: <http://www.w3.org/2001/XMLSchema#> \n" +
-                "\n" +
-                "SELECT ?stationName ?city ?station ?capacity ?lat ?lon ?updatedDateTime ?availableBikes\n" +
-                "WHERE {\n" +
-                "  ?city onto:cityName ?cityName .\n" +
-                "  ?city onto:hasStation ?station .\n" +
-                "  ?station onto:stationName ?stationName .\n" +
-                "  ?station onto:capacity ?capacity .\n" +
-                "  ?station geo:lat ?lat .\n" +
-                "  ?station geo:long ?lon .\n" +
-                "  ?station onto:hasAvailability ?availability .\n" +
-                "  ?availability onto:updatedDatetime ?updatedDateTime .\n" +
-                "  ?availability onto:availableBikes ?availableBikes .  \n" +
-                "  {SELECT ?station (MAX(?dt)  AS ?updatedDateTime)\n" +
-                "    WHERE {\n" +
-                "      ?city onto:cityName ?cityName .\n" +
-                "      ?city onto:hasStation ?station .\n" +
-                "      ?station onto:hasAvailability ?ava .\n" +
-                "      ?ava onto:updatedDatetime ?dt .\n" +
-                "      ?ava onto:availableBikes ?availableBikes .\n" +                "    } GROUP BY ?station\n" +
-                "  }\n" +
-                "}ORDER BY ?stationName   ";
+        String query =  "PREFIX schema: <http://schema.org/> \r\n" + 
+        		"PREFIX geo:   <https://www.w3.org/2003/01/geo/wgs84_pos#> \r\n" + 
+        		"PREFIX rdf:   <http://www.w3.org/2000/01/rdf-schema/> \r\n" + 
+        		"PREFIX onto:  <http://www.semanticweb.org/emse/ontologies/2020/11/city.owl#>\r\n" + 
+        		"PREFIX ont: <http://purl.org/net/ns/ontology-annot#>\r\n" + 
+        		"\r\n" + 
+        		"SELECT ?y  ?x ?lon ?lat ?station ?at ?dt \r\n" + 
+        		"WHERE{\r\n" + 
+        		" \r\n" + 
+        		"  ?sncf onto:hasAscenseur ?y.\r\n" + 
+        		"  ?sncf onto:hasEscalator ?x.\r\n" + 
+        		"  ?sncf geo:Lat ?lat .\r\n" + 
+        		"  ?sncf geo:Long ?lon .\r\n" + 
+        		"  ?sncf onto:hasName ?station .\r\n" + 
+        		"  ?sncf onto:hasID ?id.\r\n" + 
+        		"  ?sncf onto:hasTrain [].\r\n" + 
+        		"  [] onto:hasArrival ?at.\r\n" + 
+        		"  [] onto:hasDeprature ?dt.\r\n" + 
+        		"  \r\n" + 
+        		"}";
 
 
         Query qu = QueryFactory.create(query);
@@ -260,23 +254,25 @@ public class CityGuideService {
         while (results.hasNext()) {
             QuerySolution qs = results.next();
             Resource stationIRI = (Resource) qs.get("station");
-            RDFNode name = qs.get("stationName");
+            RDFNode id = qs.get("id");
+            RDFNode name = qs.get("station");
             RDFNode lat = qs.get("lat");
             RDFNode lon = qs.get("lon");
-            RDFNode capacity = qs.get("capacity");
-            RDFNode availableBikes = qs.get("availableBikes");
-            RDFNode updatedDateTime = qs.get("updatedDateTime");
+            RDFNode arrivalT = qs.get("at");
+            RDFNode departureT = qs.get("dt");
+            RDFNode ascenseurRDF = qs.get("y");
+            RDFNode escalatorRDF = qs.get("x");
 
             String lIRI = stationIRI.getURI();
             System.out.println(lIRI);
-            String ID = name.asLiteral().getString();//TODO modifications
+            String ID = id.asLiteral().getString();//TODO modifications
             String nam = name.asLiteral().getString();
             double latitude = lat.asLiteral().getDouble();
             double longitude = lon.asLiteral().getDouble();
-            String arrival = capacity.asLiteral().getString();//TODO modifications
-            String depart = updatedDateTime.asLiteral().getString();//TODO modifications
-            boolean escalator = availableBikes.asLiteral().getBoolean();//TODO modifications
-            boolean ascenseur = availableBikes.asLiteral().getBoolean(); //TODO modifications
+            String arrival = arrivalT.asLiteral().getString();//TODO modifications
+            String depart = departureT.asLiteral().getString();//TODO modifications
+            boolean escalator = escalatorRDF.asLiteral().getBoolean();//TODO modifications
+            boolean ascenseur = ascenseurRDF.asLiteral().getBoolean(); //TODO modifications
             
             sncfList.add(new SNCFStations( ID, nam, latitude,  longitude, arrival, depart, escalator, ascenseur));
         }
