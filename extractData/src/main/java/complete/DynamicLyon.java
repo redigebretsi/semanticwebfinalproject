@@ -1,8 +1,6 @@
 package complete;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -27,8 +25,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import complete.NsPrefix;
-
 /**
  * Extract the dynamic data of Lyon and save it in Fueski. 
  * 
@@ -40,8 +36,11 @@ public class DynamicLyon {
 	public static void main(String args[]) throws IOException, JSONException {
 		sslResolve();
 		String url = "https://download.data.grandlyon.com/wfs/rdata?SERVICE=WFS&VERSION=1.1.0&outputformat=GEOJSON&request=GetFeature&typename=jcd_jcdecaux.jcdvelov&SRSNAME=urn:ogc:def:crs:EPSG::4171";
-		JSONObject json = readJsonFromUrl(url);		
-		processStationDyna(json);
+		String jsonText = readJsonFromUrl(url);
+		JSONObject json = new JSONObject(jsonText);
+		JSONArray fstations = (JSONArray) json.get("features");
+		System.out.println(fstations);
+		processStationDyna(fstations);
 	}
 	
 	public static void sslResolve() {
@@ -69,18 +68,17 @@ public class DynamicLyon {
 
 	}
 
-	public static JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
+	public static String readJsonFromUrl(String url) throws IOException, JSONException {
 		InputStream is = new URL(url).openStream();
 		try {
 			BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
 			String jsonText = readAll(rd);
-			JSONObject json = new JSONObject(jsonText);
 			System.out.println(jsonText);
-			return json;
+			return jsonText;
 		} finally {
 			is.close();
 		}
-			}
+	}
 
 	private static String readAll(Reader rd) throws IOException {
 		StringBuilder sb = new StringBuilder();
@@ -91,15 +89,17 @@ public class DynamicLyon {
 		return sb.toString();
 	}
 
-	private static void processStationDyna(JSONObject json) {
+	private static void processStationDyna(JSONArray fstations) {
+		
 
-		String stationURIPrefix = NsPrefix.getSchemaNS() + "Station";	
-		//System.out.println(stationURIPrefix);
+		String stationURIPrefix = NsPrefix.getOntoNS() + "Station";		
+		System.out.println(stationURIPrefix);
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		Date today = new Date();
 		String todayDate = formatter.format(today);
-		JSONArray fstations = (JSONArray) json.get("features");
+		int i = 0;
 		for (Object station : fstations) {
+			i++;
 			JSONObject stationJson = (JSONObject) station;
 			JSONObject properties=(JSONObject) stationJson.get("properties");
 			String ID = (String) properties.get("number");
@@ -108,26 +108,25 @@ public class DynamicLyon {
 //		    String nupdatetime = (String) properties.get("last_update");
 //		    String nlat = (String) properties.get("lat");
 //		    String nlong = (String) properties.get("lng");
-
-			String iri = stationURIPrefix + ":LYON:" + ID;
+			String iri = NsPrefix.getOntoNS() + "BicycleStation/" + i;
 
 			String query = "PREFIX schema: <http://schema.org/> \r\n"
 					+ "PREFIX geo:   <https://www.w3.org/2003/01/geo/wgs84_pos#> \r\n"
-					+ "PREFIX xsd:   <http://www.w3.org/2000/01/rdf-schema/> \r\n"
-					+ "PREFIX onto:  <http://www.semanticweb.org/emse/ontologies/2020/11/city.owl#> "
-					+"PREFIX schema: <http://schema.org/>\r\n"
-					+ "INSERT DATA { <" +  iri + "> onto:hasAvailability [\r\n" 
-					+ "                                            a           onto:Availability; \r\n"
-					+ "					                           onto:updatedDatetime \"" + todayDate + "\"^^xsd:dateTime;\r\n"
+					+ "PREFIX rdf:   <http://www.w3.org/2000/01/rdf-schema/> \r\n"
+					+ "PREFIX onto:  <http://www.semanticweb.org/emse/ontologies/2020/11/city.owl#>\r\n"
+					+ "INSERT DATA { <" +  iri + "> onto:hasAvailability [].\r\n" 
+					+ "                        []                    a           onto:Availability; \r\n"
+					+ "					                           onto:updatedDatetime \"" + todayDate + "\";\r\n"
 					+ "					                           onto:availableBikes \""  + nava + "\";\r\n" 
-					+ "                                            ] .\r\n" 
+					+ "                                             .\r\n" 
 					+ "		}";
 			
 			
+            System.out.println(query);
 			UpdateRequest update  = UpdateFactory.create(query);
 	        UpdateProcessor qexec = UpdateExecutionFactory.createRemote(update, FUESKI_LOCAL_ENDPOINT);
 	        qexec.execute();	
-	        //model.write(new FileOutputStream(new File(url)), "TURTLE");
+			System.out.println("DONE: Added Lyon dynamic"+iri);
 		}
 		System.out.println("DONE: Added Lyon dynamic data");
 	}

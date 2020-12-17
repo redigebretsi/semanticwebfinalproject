@@ -55,14 +55,15 @@ public class CityStaticCreateModel {
 		
 
 		// create
-		city.addProperty(RDF.type, NsPrefix.getSchemaNS()+"City");
+		Resource cityClass = model.createResource(NsPrefix.getSchemaNS()+"City");
+		city.addProperty(RDF.type,cityClass );
 		city.addProperty(hasName, "Lyon");
 		Resource bStation = model.createResource();
 		city.addProperty(hasa, bStation);
 			
-		 // ReadStaticSNCFData sncfData = new ReadStaticSNCFData(); 
-		 // List<SNCFStation> stations = sncfData.processData();
-	//	  appendSNCFtoModel(bStation, stations);
+		  ReadStaticSNCFData sncfData = new ReadStaticSNCFData(); 
+		  List<SNCFStation> stations = sncfData.processData();
+		  appendSNCFtoModel(bStation, stations);
 		  
 		  ReadStaticBusTramMetroData btmData = new ReadStaticBusTramMetroData();
 		  List<BTMStations> btmstations = btmData.processData();
@@ -114,45 +115,47 @@ public class CityStaticCreateModel {
 		model = ModelFactory.createDefaultModel();
 		model.setNsPrefix("schema", NsPrefix.getSchemaNS());
 		model.setNsPrefix("onto", NsPrefix.getOntoNS());
-		model.setNsPrefix("xsd", NsPrefix.getrdf());
+		model.setNsPrefix("rdf", NsPrefix.getrdf());
 		model.setNsPrefix("geo", NsPrefix.getGeoNS());
+		
 
 	}
 
-//	private static void appendSNCFtoModel(Resource blank, List<SNCFStation> stations) {
-//
-//		Property hasSNFstation = model.createProperty(NsPrefix.getOntoNS() + "hasSNFstation");
-//
-//		Property hasId = model.createProperty(NsPrefix.getOntoNS() + "hasID");
-//		Property hasName = model.createProperty(NsPrefix.getOntoNS() + "hasName");
-//		Property hasLatitude = model.createProperty(NsPrefix.getGeoNS() + "Lat");
-//		Property hasLongtiude = model.createProperty(NsPrefix.getGeoNS() + "Long");
-//		Property hasEscalator = model.createProperty(NsPrefix.getOntoNS() + "hasEscalator");
-//		Property hasAscenseur = model.createProperty(NsPrefix.getOntoNS() + "hasAscenseur");
-//		Property hasTrain = model.createProperty(NsPrefix.getOntoNS() + "hasTrain");
-//		Property hasArrival = model.createProperty(NsPrefix.getOntoNS() + "hasArrival");
-//		Property hasDeprature = model.createProperty(NsPrefix.getOntoNS() + "hasDeprature");
-//
-//		for (SNCFStation station : stations) {
-//			Resource trainstation = model
-//					.createResource(NsPrefix.getOntoNS() + "SNCFstation/" + station.getID().replaceAll(" ", "_"));
-//			Resource train = model.createResource();
-//			blank.addProperty(hasSNFstation, trainstation);
-//			trainstation.addProperty(RDF.type, NsPrefix.getSchemaNS()+ "SNCFStation");
-//			trainstation.addProperty(hasId, station.getID());
-//			trainstation.addProperty(hasName, station.getName());
-//			trainstation.addProperty(hasLatitude, String.valueOf(station.getLat()), XSDDatatype.XSDdouble);
-//			trainstation.addProperty(hasLongtiude, String.valueOf(station.getLon()), XSDDatatype.XSDdouble);
-//			trainstation.addProperty(hasEscalator, String.valueOf(station.isEscalator()), XSDDatatype.XSDboolean);
-//			trainstation.addProperty(hasAscenseur, String.valueOf(station.isAscenseur()), XSDDatatype.XSDboolean);
-//			trainstation.addProperty(hasTrain, train);
-//
-//			train.addProperty(hasArrival, String.valueOf(station.getArrival()));
-//			train.addProperty(hasDeprature, String.valueOf(station.getDepart()));
-//
-//		}
-//
-//	}
+	private static void appendSNCFtoModel(Resource blank, List<SNCFStation> stations) {
+
+		Property hasSNFstation = model.createProperty(NsPrefix.getOntoNS() + "hasSNFstation");
+
+		Property hasId = model.createProperty(NsPrefix.getOntoNS() + "hasID");
+		Property hasName = model.createProperty(NsPrefix.getOntoNS() + "hasName");
+		Property hasLatitude = model.createProperty(NsPrefix.getGeoNS() + "Lat");
+		Property hasLongtiude = model.createProperty(NsPrefix.getGeoNS() + "Long");
+		Property hasEscalator = model.createProperty(NsPrefix.getOntoNS() + "hasEscalator");
+		Property hasAscenseur = model.createProperty(NsPrefix.getOntoNS() + "hasAscenseur");
+		Property hasTrain = model.createProperty(NsPrefix.getOntoNS() + "hasTrain");
+		Property hasArrival = model.createProperty(NsPrefix.getOntoNS() + "hasArrival");
+		Property hasDeprature = model.createProperty(NsPrefix.getOntoNS() + "hasDeprature");
+
+		for (SNCFStation station : stations) {
+			Resource trainstation = model
+					.createResource(NsPrefix.getOntoNS() + "SNCFstation/" + station.getID().replaceAll(" ", "_"));
+			Resource train = model.createResource();
+			blank.addProperty(hasSNFstation, trainstation);
+			Resource trainClass = model.createResource(NsPrefix.getSchemaNS()+ "SNCFStation");
+			trainstation.addProperty(RDF.type, trainClass);
+			trainstation.addProperty(hasId, station.getID());
+			trainstation.addProperty(hasName, station.getName());
+			trainstation.addProperty(hasLatitude, String.valueOf(station.getLat()), XSDDatatype.XSDdouble);
+			trainstation.addProperty(hasLongtiude, String.valueOf(station.getLon()), XSDDatatype.XSDdouble);
+			trainstation.addProperty(hasEscalator, String.valueOf(station.isEscalator()), XSDDatatype.XSDboolean);
+			trainstation.addProperty(hasAscenseur, String.valueOf(station.isAscenseur()), XSDDatatype.XSDboolean);
+			trainstation.addProperty(hasTrain, train);
+
+			train.addProperty(hasArrival, String.valueOf(station.getArrival()));
+			train.addProperty(hasDeprature, String.valueOf(station.getDepart()));
+
+		}
+
+	}
 
 	private static void appendBTMStoModel(Resource blank, List<BTMStations> stations) {
 
@@ -176,12 +179,14 @@ public class CityStaticCreateModel {
 					.createResource(NsPrefix.getOntoNS() + "tramStation/" + station.getID().replaceAll(" ", "_"));
 			Resource metroStation = model
 					.createResource(NsPrefix.getOntoNS() + "metroStation/" + station.getID().replaceAll(" ", "_"));
-
+           
 			blank.addProperty(hasBusStation, busStation);
 			blank.addProperty(hasTramStation, tramStation);
 			blank.addProperty(hasMetroStation, metroStation);
 			
-			busStation.addProperty(RDF.type, NsPrefix.getSchemaNS() + "busStation");
+			Resource busClass = model.createResource(NsPrefix.getSchemaNS()+ "busStation");
+			
+			busStation.addProperty(RDF.type, busClass);
 			busStation.addProperty(hasId, station.getID());
 			busStation.addProperty(hasName, station.getName());
 			busStation.addProperty(hasLatitude, String.valueOf(station.getLat()), XSDDatatype.XSDdouble);
@@ -189,7 +194,8 @@ public class CityStaticCreateModel {
 			busStation.addProperty(hasBusNumber, String.valueOf(station.getBusNumber()));
 			busStation.addProperty(hasUpdatedTime, String.valueOf(station.getUpdatedtime()));
 			
-			tramStation.addProperty(RDF.type, NsPrefix.getSchemaNS() + "tramStation");
+			Resource tramClass = model.createResource(NsPrefix.getSchemaNS()+ "tramStation");
+			tramStation.addProperty(RDF.type,tramClass);
 			tramStation.addProperty(hasId, station.getID());
 			tramStation.addProperty(hasName, station.getName());
 			tramStation.addProperty(hasLatitude, String.valueOf(station.getLat()), XSDDatatype.XSDdouble);
@@ -197,7 +203,9 @@ public class CityStaticCreateModel {
 			tramStation.addProperty(hasTramNumber, String.valueOf(station.getTramNumber()));
 			tramStation.addProperty(hasUpdatedTime, String.valueOf(station.getUpdatedtime()));
 			
-			metroStation.addProperty(RDF.type, NsPrefix.getSchemaNS() + "metroStation");
+			
+			Resource metroClass = model.createResource(NsPrefix.getSchemaNS()+ "metroStation");
+			metroStation.addProperty(RDF.type, metroClass);
 			metroStation.addProperty(hasId, station.getID());
 			metroStation.addProperty(hasName, station.getName());
 			metroStation.addProperty(hasLatitude, String.valueOf(station.getLat()), XSDDatatype.XSDdouble);
@@ -215,11 +223,14 @@ public class CityStaticCreateModel {
 		Property hasId = model.createProperty(NsPrefix.getOntoNS() + "hasId");
 		Property hasName = model.createProperty(NsPrefix.getOntoNS() + "hasName");
 		Property hascapacity = model.createProperty(NsPrefix.getOntoNS() + "hascapacity");
-		
+		int i = 0;
 		for (BicycleStation station : stations) {
+			i++;
 			Resource bicyclestation = model
-					.createResource(NsPrefix.getOntoNS() + "BicycleStation/" + station.getID().replaceAll(" ", "_"));
-			bicyclestation.addProperty(RDF.type, NsPrefix.getSchemaNS() + "bicyclestation");
+					.createResource(NsPrefix.getOntoNS() + "BicycleStation/" + i);
+			Resource bicycleClass = model.createResource(NsPrefix.getSchemaNS() + "bicyclestation");
+			
+			bicyclestation.addProperty(RDF.type,bicycleClass );
 			blank.addProperty(hasBicycleStation, bicyclestation);
 			bicyclestation.addProperty(hasName, station.getName(), "En");
 			Statement statement_pcapacity = model.createLiteralStatement(bicyclestation, hascapacity,
@@ -246,7 +257,9 @@ public class CityStaticCreateModel {
 		for (Hospital hos : hospitalList) {
 			i++;
 			Resource Hospital = model.createResource(NsPrefix.getOntoNS() + "hospital" + i);
-			Hospital.addProperty(RDF.type,NsPrefix.getSchemaNS() + "Hospital");
+			
+			Resource hospClass = model.createResource(NsPrefix.getSchemaNS() + "Hospital");
+			Hospital.addProperty(RDF.type,hospClass);
 			bHospital.addProperty(instanceofhospital, Hospital);
 			Hospital.addProperty(hasadresse, hos.getAdresse());
 			Hospital.addProperty(hastel_number, String.valueOf(hos.getTel_number()));
