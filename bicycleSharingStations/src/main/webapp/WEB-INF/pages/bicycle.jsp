@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:dc="http://purl.org/dc/elements/1.1/" >
+      
 <head>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
@@ -213,12 +215,11 @@ function setBicycleTableRows(data){
    // console.log(value);
         res +=
         '<tr>'+
-            '<td vocab="https://opendata.paris.fr/api/records/1.0/search/?dataset=velib-emplacement-des-stations" resource="'+value.id+'" typeof="PublicBicycleStation"><span property="stationName">'+value.name+'</span></td>'+
-            '<td prefix="geo: https://www.w3.org/2003/01/geo/wgs84_pos#" resource="'+value.id+'"><span property="lat">'+value.lat+'</span></td>'+
-            '<td prefix="geo: https://www.w3.org/2003/01/geo/wgs84_pos#" resource="'+value.id+'"><span property="lon">'+value.lon+'</span></td>'+
-            '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2019/11/bicycle_stations.owl#" resource="'+value.id+'"><span property="capacity">'+value.capacity+'</span></td>'+
-            '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2019/11/bicycle_stations.owl#" resource="'+value.id+'"><span property="availableBikes">'+value.availableBikes+'</span></td>'+
-            '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2019/11/bicycle_stations.owl#" resource="'+value.id+'"><span property="updatedDatetime">'+value.localUpdateDateTime+'</span></td>'+
+            '<td vocab="http://Schema.org/" resource="'+value.name+'" typeof="Station"><span property="dc:title">'+value.name+'</span></td>'+
+            '<td resource="'+value.name+'"><span property="geo:lat">'+value.lat+'</span></td>'+
+            '<td  resource="'+value.name+'"><span property="geo:lon">'+value.lon+'</span></td>'+
+            '<td  resource="'+value.name+'"><span property="onto:capacity">'+value.capacity+'</span></td>'+
+
 
         '</tr>';
     });
@@ -263,10 +264,10 @@ function setHospitalTableRows(data){
         res +=
         '<tr>'+
             '<td vocab="https://opendata.paris.fr/api/records/1.0/search/?dataset=velib-emplacement-des-stations" resource="'+value.id+'" typeof="PublicBicycleStation"><span property="hospitalcategory">'+value.catagorie+'</span></td>'+
-            '<td prefix="geo: https://www.w3.org/2003/01/geo/wgs84_pos#" resource="'+value.id+'"><span property="lat">'+value.lat+'</span></td>'+
-            '<td prefix="geo: https://www.w3.org/2003/01/geo/wgs84_pos#" resource="'+value.id+'"><span property="lon">'+value.lon+'</span></td>'+
-            '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2019/11/bicycle_stations.owl#" resource="'+value.id+'"><span property="capacity">'+value.adresse+'</span></td>'+
-            '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2019/11/bicycle_stations.owl#" resource="'+value.id+'"><span property="availableBikes">'+value.tel_number+'</span></td>'+
+            '<td  resource="'+value.id+'"><span property="lat">'+value.lat+'</span></td>'+
+            '<td  resource="'+value.id+'"><span property="lon">'+value.lon+'</span></td>'+
+            '<td  resource="'+value.id+'"><span property="capacity">'+value.adresse+'</span></td>'+
+            '<td  resource="'+value.id+'"><span property="availableBikes">'+value.tel_number+'</span></td>'+
         '</tr>';
     });
 
@@ -309,13 +310,13 @@ function setSNCFTableRows(data){
    // console.log(value);
         res +=
         '<tr>'+
-            '<td vocab="https://opendata.paris.fr/api/records/1.0/search/?dataset=velib-emplacement-des-stations" resource="'+value.id+'" typeof="PublicBicycleStation"><span property="stationName">'+value.name+'</span></td>'+
-            '<td prefix="geo: https://www.w3.org/2003/01/geo/wgs84_pos#" resource="'+value.id+'"><span property="lat">'+value.lat+'</span></td>'+
-            '<td prefix="geo: https://www.w3.org/2003/01/geo/wgs84_pos#" resource="'+value.id+'"><span property="lon">'+value.lon+'</span></td>'+
-            '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2019/11/bicycle_stations.owl#" resource="'+value.id+'"><span property="capacity">'+value.capacity+'</span></td>'+
-            '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2019/11/bicycle_stations.owl#" resource="'+value.id+'"><span property="availableBikes">'+value.availableBikes+'</span></td>'+
-            '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2019/11/bicycle_stations.owl#" resource="'+value.id+'"><span property="capacity">'+value.capacity+'</span></td>'+
-            '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2019/11/bicycle_stations.owl#" resource="'+value.id+'"><span property="availableBikes">'+value.availableBikes+'</span></td>'+
+            '<td vocab="https://opendata.paris.fr/api/records/1.0/search/?dataset=velib-emplacement-des-stations" resource="'+value.id+'" typeof="PublicBicycleStation"><span property="stationName">'+value.SNCFStationName+'</span></td>'+
+            '<td  resource="'+value.id+'"><span property="geo:lat">'+value.lat+'</span></td>'+
+            '<td  resource="'+value.id+'"><span property="geo:lon">'+value.lon+'</span></td>'+
+            '<td  resource="'+value.id+'"><span property="onto:hasArrival">'+value.ArrivalTime+'</span></td>'+
+            '<td  resource="'+value.id+'"><span property="onto:hasDeparture">'+value.DepartTime+'</span></td>'+
+            '<td  resource="'+value.id+'"><span property="onto:hasAscenseur">'+value.HasElevatorr+'</span></td>'+
+            '<td  resource="'+value.id+'"><span property="onto:hasEscalator">'+value.HasEscalator+'</span></td>'+
         '</tr>';
     });
 
@@ -368,9 +369,9 @@ function setBTMTableRows(choice,data){
     		        res +=
     		        '<tr>'+
     		            '<td vocab="https://opendata.paris.fr/api/records/1.0/search/?dataset=velib-emplacement-des-stations" resource="'+value.id+'" typeof="PublicBicycleStation"><span property="stationName">'+value.name+'</span></td>'+
-    		            '<td prefix="geo: https://www.w3.org/2003/01/geo/wgs84_pos#" resource="'+value.id+'"><span property="lat">'+value.lat+'</span></td>'+
-    		            '<td prefix="geo: https://www.w3.org/2003/01/geo/wgs84_pos#" resource="'+value.id+'"><span property="lon">'+value.lon+'</span></td>'+
-    		            '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2019/11/bicycle_stations.owl#" resource="'+value.id+'"><span property="capacity">'+value.number+'</span></td>'+
+    		            '<td  resource="'+value.id+'"><span property="geo:lat">'+value.lat+'</span></td>'+
+    		            '<td  resource="'+value.id+'"><span property="geo:lon">'+value.lon+'</span></td>'+
+    		            '<td  resource="'+value.id+'"><span property="onto:busStation">'+value.number+'</span></td>'+
     		        '</tr>';
     		    });
 
@@ -388,9 +389,9 @@ function setBTMTableRows(choice,data){
 			        res +=
 			        '<tr>'+
 			            '<td vocab="https://opendata.paris.fr/api/records/1.0/search/?dataset=velib-emplacement-des-stations" resource="'+value.id+'" typeof="PublicBicycleStation"><span property="stationName">'+value.name+'</span></td>'+
-			            '<td prefix="geo: https://www.w3.org/2003/01/geo/wgs84_pos#" resource="'+value.id+'"><span property="lat">'+value.lat+'</span></td>'+
-			            '<td prefix="geo: https://www.w3.org/2003/01/geo/wgs84_pos#" resource="'+value.id+'"><span property="lon">'+value.lon+'</span></td>'+
-			            '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2019/11/bicycle_stations.owl#" resource="'+value.id+'"><span property="capacity">'+value.number+'</span></td>'+
+			            '<td  resource="'+value.id+'"><span property="geo:lat">'+value.lat+'</span></td>'+
+			            '<td  resource="'+value.id+'"><span property="geo:lon">'+value.lon+'</span></td>'+
+			            '<td  resource="'+value.id+'"><span property="onto:tramNumber">'+value.number+'</span></td>'+
 			        '</tr>';
 			    });
 
@@ -408,9 +409,9 @@ function setBTMTableRows(choice,data){
 			        res +=
 			        '<tr>'+
 			            '<td vocab="https://opendata.paris.fr/api/records/1.0/search/?dataset=velib-emplacement-des-stations" resource="'+value.id+'" typeof="PublicBicycleStation"><span property="stationName">'+value.name+'</span></td>'+
-			            '<td prefix="geo: https://www.w3.org/2003/01/geo/wgs84_pos#" resource="'+value.id+'"><span property="lat">'+value.lat+'</span></td>'+
-			            '<td prefix="geo: https://www.w3.org/2003/01/geo/wgs84_pos#" resource="'+value.id+'"><span property="lon">'+value.lon+'</span></td>'+
-			            '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2019/11/bicycle_stations.owl#" resource="'+value.id+'"><span property="capacity">'+value.number+'</span></td>'+
+			            '<td resource="'+value.id+'"><span property="geo:lat">'+value.lat+'</span></td>'+
+			            '<td resource="'+value.id+'"><span property="geo:lon">'+value.lon+'</span></td>'+
+			            '<td  resource="'+value.id+'"><span property="onto:metronumber">'+value.number+'</span></td>'+
 			        '</tr>';
 			    });
 
@@ -455,7 +456,8 @@ label.error {
 }
 </style>
 </head>
-<body>
+<body prefix="geo: https://www.w3.org/2003/01/geo/wgs84_pos# onto: http://www.semanticweb.org/emse/ontologies/2020/11/city.owl#">
+
 
 <nav class="navbar navbar-inverse">
     <div class="container">
@@ -470,10 +472,10 @@ label.error {
       </li>
       <li class="nav-item">
         <a class="nav-link" href="http://localhost:8080/bicycleSearch">Search Live Bicycle</a>
-      </li>
+     <!-- </li>
        <li class="nav-item">
         <a class="nav-link" href="http://localhost:8080/poi">Point of Interest</a>
-      </li>
+      </li> --> 
     </ul>
   </div>
 </nav>

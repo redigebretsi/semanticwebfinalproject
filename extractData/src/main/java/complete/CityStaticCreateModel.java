@@ -61,9 +61,9 @@ public class CityStaticCreateModel {
 		Resource bStation = model.createResource();
 		city.addProperty(hasa, bStation);
 			
-		  ReadStaticSNCFData sncfData = new ReadStaticSNCFData(); 
-		  List<SNCFStation> stations = sncfData.processData();
-		  appendSNCFtoModel(bStation, stations);
+//		  ReadStaticSNCFData sncfData = new ReadStaticSNCFData(); 
+//		  List<SNCFStation> stations = sncfData.processData();
+//		  appendSNCFtoModel(bStation, stations);
 		  
 		  ReadStaticBusTramMetroData btmData = new ReadStaticBusTramMetroData();
 		  List<BTMStations> btmstations = btmData.processData();

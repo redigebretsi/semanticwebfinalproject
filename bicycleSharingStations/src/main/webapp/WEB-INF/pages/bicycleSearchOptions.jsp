@@ -66,12 +66,12 @@
         console.log(value.ID);
             res +=
             '<tr>'+
-                '<td vocab="https://opendata.paris.fr/api/records/1.0/search/?dataset=velib-emplacement-des-stations" resource="'+value.ID+'" typeof="PublicBicycleStation"><span property="stationName">'+value.name+'</span></td>'+
-                '<td prefix="geo: https://www.w3.org/2003/01/geo/wgs84_pos#" resource="'+value.ID+'"><span property="lat">'+value.lat+'</span></td>'+
-                '<td prefix="geo: https://www.w3.org/2003/01/geo/wgs84_pos#" resource="'+value.ID+'"><span property="lon">'+value.lon+'</span></td>'+
-                '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2019/11/bicycle_stations.owl#" resource="'+value.ID+'"><span property="capacity">'+value.capacity+'</span></td>'+
-                '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2019/11/bicycle_stations.owl#" resource="'+value.ID+'"><span property="availableBikes">'+value.availableBikes+'</span></td>'+
-                '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2019/11/bicycle_stations.owl#" resource="'+value.ID+'"><span property="updatedDatetime">'+value.localUpdateDateTime+'</span></td>'+
+                '<td vocab="https://opendata.paris.fr/api/records/1.0/search/?dataset=velib-emplacement-des-stations" resource="'+value.stationName+'" typeof="Station"><span property="stationName">'+value.name+'</span></td>'+
+                '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2020/11/city.owl#"'+value.stationName+'"><span property="onto:availableBikes">'+value.availableBicycle+'</span></td>'+
+                '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2020/11/city.owl#"'+value.stationName+'"><span property="onto:temperature">'+value.temperature+'</span></td>'+
+                '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2020/11/city.owl#" resource="'+value.stationName+'"><span property="onto:humidity">'+value.humidity+'</span></td>'+
+                '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2020/11/city.owl#" resource="'+value.stationName+'"><span property="onto:windspeed">'+value.windSpeed+'</span></td>'+
+                '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2020/11/city.owl#" resource="'+value.stationName+'"><span property="onto:pressure">'+value.pressure+'</span></td>'+
                 '<td>'
             '</tr>';
         });
@@ -124,10 +124,11 @@ label.error {
               </li>
               <li class="nav-item active">
                 <a class="nav-link" href="#">Search more <span class="sr-only">(current)</span></a>
-              </li>
+              
+             <!-- </li> 
               <li class="nav-item">
                  <a class="nav-link" href="http://localhost:8080/poi">Point of Interest</a>
-             </li>
+             </li>-->
             </ul>
           </div>
         </nav>
@@ -187,11 +188,11 @@ label.error {
                         <thead>
                         <tr>
                             <th>Station Name</th>
-                            <th>Latitude</th>
-                            <th>Longitude</th>
-                            <th>Capacity</th>
-                            <th>Available</th>
-                            <th>More</th>
+                            <th>Available Bicycle</th>
+                            <th>Temperature</th>
+                            <th>Humidity</th>
+                            <th>WindSpeed </th>
+                            <th>Pressure</th>
                         </tr>
                         </thead>
                         <tbody></tbody>
