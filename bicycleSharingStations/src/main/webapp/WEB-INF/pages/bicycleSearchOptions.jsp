@@ -123,12 +123,11 @@ label.error {
                 <a class="nav-link" href="http://localhost:8080">Home</a>
               </li>
               <li class="nav-item active">
-                <a class="nav-link" href="#">Search more <span class="sr-only">(current)</span></a>
-              
-             <!-- </li> 
+                <a class="nav-link" href="#">Search Live Bicycle <span class="sr-only">(current)</span></a>              
+            </li> 
               <li class="nav-item">
-                 <a class="nav-link" href="http://localhost:8080/poi">Point of Interest</a>
-             </li>-->
+                 <a class="nav-link" href="http://localhost:8080/museum">Museums</a>
+             </li>
             </ul>
           </div>
         </nav>
@@ -207,16 +206,6 @@ label.error {
         <div id="footer" class="footer-copyright text-center py-3">© 2020 Copyright: Semantic Web
         </div>
     </footer>
-</div>
-
-<div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" data-backdrop="static" area-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-body">
-                <div class="loader"></div>
-            </div>
-        </div>
-    </div>
 </div>
 
 </body>

@@ -12,6 +12,7 @@ import com.emse.lyonCityGuide.model.BTMStations;
 import com.emse.lyonCityGuide.model.BicycleStation;
 import com.emse.lyonCityGuide.model.DynamicData;
 import com.emse.lyonCityGuide.model.Hospital;
+import com.emse.lyonCityGuide.model.Museum;
 import com.emse.lyonCityGuide.model.SNCFStations;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -302,5 +303,54 @@ public class CityGuideService {
 			sncfList.add(new SNCFStations(ID, nam, latitude, longitude, arrival, depart, escalator, ascenseur));
 		}
 		return sncfList;
+	}
+
+	public List<Museum> getMuseums() {
+
+		List<Museum> list = new ArrayList<Museum>();
+	    String sparqlEndPoint = "https://query.wikidata.org/sparql";
+
+	    String wikidataPrefixes = "PREFIX bd: <http://www.bigdata.com/rdf#> PREFIX wikibase: <http://wikiba.se/ontology#>  PREFIX wdt: <http://www.wikidata.org/prop/direct/>  PREFIX wd: <http://www.wikidata.org/entity/> ";
+        
+        String queryString = wikidataPrefixes + "SELECT DISTINCT ?museumLabel ?museumDescription ?villeId ?villeIdLabel (?villeIdLabel AS ?ville) ?coord ?lat ?lon\r\n"
+        		+ "WHERE\r\n"
+        		+ "{\r\n"
+        		+ "  ?museum wdt:P539 ?museofile.  \r\n"
+        		+ "  ?museum wdt:P131* wd:Q456.\r\n"
+        		+ "  ?museum wdt:P131 ?villeId. \r\n"
+        		+ "  OPTIONAL {?museum wdt:P856 ?link.}   \r\n"
+        		+ "  OPTIONAL {?museum wdt:P625 ?coord .}\r\n"
+        		+ " \r\n"
+        		+ "  SERVICE wikibase:label { bd:serviceParam wikibase:language \"en\". } \r\n"
+        		+ "}\r\n"
+        		+ "ORDER BY  ?villeIdLabel";
+        QueryExecution qexec = QueryExecutionFactory.sparqlService(sparqlEndPoint, queryString);
+        try {
+            ResultSet results = qexec.execSelect();
+            while (results.hasNext()) {
+    			QuerySolution qs = results.next();
+    			RDFNode label = qs.get("museumLabel");
+    			RDFNode desc = qs.get("museumDescription");
+    			RDFNode villeLabel= qs.get("villeIdLabel");
+    			RDFNode ville = qs.get("ville");
+    			RDFNode coord = qs.get("coord");
+
+    			String lableS = label.asLiteral().getString();
+    			String descS = desc.asLiteral().getString();
+    			String villeLabelS = villeLabel.asLiteral().getString();
+    			String villeS = ville.asLiteral().getString();
+    			String coordS = coord.asLiteral().getString();
+
+    			list.add(new Museum(lableS, descS, villeLabelS, villeS, coordS));
+    		}
+            
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        } finally {
+            qexec.close();
+        }
+
+		
+		return list;
 	}
 }

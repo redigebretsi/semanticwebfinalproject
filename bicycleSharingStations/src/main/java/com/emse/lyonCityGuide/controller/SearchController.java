@@ -13,6 +13,7 @@ import com.emse.lyonCityGuide.model.BTMStations;
 import com.emse.lyonCityGuide.model.BicycleStation;
 import com.emse.lyonCityGuide.model.DynamicData;
 import com.emse.lyonCityGuide.model.Hospital;
+import com.emse.lyonCityGuide.model.Museum;
 import com.emse.lyonCityGuide.model.SNCFStations;
 import com.emse.lyonCityGuide.service.CityGuideService;
 
@@ -28,13 +29,11 @@ public class SearchController {
 
     @RequestMapping("/api/hospitalsearch/")
     public ResponseEntity<List<Hospital>> findHospitals() {
-        //System.out.println("cname::" + cname);
         List<Hospital> hospitals = cityGuideService.findHospitals();
         return new ResponseEntity<List<Hospital>>(hospitals, HttpStatus.OK);
     }
     @RequestMapping("/api/bicyclesearch/")
     public ResponseEntity<List<BicycleStation>> findBicycleStation() {
-        //System.out.println("cname::" + cname);
         List<BicycleStation> bicycleStation = cityGuideService.findBicycleStation();
         return new ResponseEntity<List<BicycleStation>>(bicycleStation, HttpStatus.OK);
     }
@@ -46,14 +45,17 @@ public class SearchController {
     }
     @RequestMapping("/api/sncfsearch/")
     public ResponseEntity<List<SNCFStations>> findSNCFmodel() {
-        //System.out.println("cname::" + cname);
         List<SNCFStations> sncfStation = cityGuideService.findSNCFmodel();
         return new ResponseEntity<List<SNCFStations>>(sncfStation, HttpStatus.OK);
     }
     @RequestMapping("/api/fetchDynamic/")
     public ResponseEntity<List<DynamicData>> fetchDynamic() throws JSONException, IOException {
-        //System.out.println("cname::" + cname);
         List<DynamicData> dynamicData = cityGuideService.findDynamicData();
         return new ResponseEntity<List<DynamicData>>(dynamicData, HttpStatus.OK);
+    }
+    @RequestMapping("/api/getMuseums/")
+    public ResponseEntity<List<Museum>> getMuseums() throws JSONException, IOException {
+        List<Museum> museumList = cityGuideService.getMuseums();
+        return new ResponseEntity<List<Museum>>(museumList, HttpStatus.OK);
     }
 }

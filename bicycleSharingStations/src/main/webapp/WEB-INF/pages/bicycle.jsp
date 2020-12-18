@@ -462,10 +462,10 @@ label.error {
       </li>
       <li class="nav-item">
         <a class="nav-link" href="http://localhost:8080/bicycleSearch">Search Live Bicycle</a>
-     <!-- </li>
+      </li>
        <li class="nav-item">
-        <a class="nav-link" href="http://localhost:8080/poi">Point of Interest</a>
-      </li> --> 
+        <a class="nav-link" href="http://localhost:8080/museum">Museums</a>
+      </li> 
     </ul>
   </div>
 </nav>

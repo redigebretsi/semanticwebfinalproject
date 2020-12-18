@@ -39,7 +39,7 @@ public class DynamicLyon {
 		sslResolve();
 		ReadDynamicLyon dlyonData = new ReadDynamicLyon();
 		  List<Dbicycle> dbicyclestations = dlyonData.processData();
-		  updateQuery(dbicyclestations);
+		 updateQuery(dbicyclestations);
 	}
 	
 	public static void sslResolve() {
@@ -112,8 +112,8 @@ public class DynamicLyon {
 			
 			UpdateRequest update  = UpdateFactory.create(query);
 	       UpdateProcessor qexec = UpdateExecutionFactory.createRemote(update, FUESKI_LOCAL_ENDPOINT);
-	        qexec.execute();	
-			//System.out.println("DONE: Added Lyon dynamic"+iri);
+	       qexec.execute();	
+			System.out.println(query);
 		}
 		System.out.println("DONE: Added Lyon dynamic data");
 	}

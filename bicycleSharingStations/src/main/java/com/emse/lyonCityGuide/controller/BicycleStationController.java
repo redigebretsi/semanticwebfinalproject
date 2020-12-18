@@ -30,8 +30,8 @@ public class BicycleStationController {
     public String bicycleSearch(Map<String, Object> model) {
         return "bicycleSearchOptions";
     }
-    @RequestMapping("/poi")
-    public String poi(Map<String, Object> model) {
-    	return "poi";
+    @RequestMapping("/museum")
+    public String museum(Map<String, Object> model) {
+    	return "museumInLyon";
     }
 }

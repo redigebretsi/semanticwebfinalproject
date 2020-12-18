@@ -50,9 +50,7 @@ public class ReadDynamicLyon {
 
 	private static void processStations(JSONArray stations) {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-		Date today = new Date();
-		String todayDate = formatter.format(today);
-		int i = 0;
+
 		for (Object station : stations) {
 			JSONObject stationJson = (JSONObject) station;
 			JSONObject properties=(JSONObject) stationJson.get("properties");
