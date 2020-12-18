@@ -227,7 +227,7 @@ public class CityStaticCreateModel {
 		for (BicycleStation station : stations) {
 			i++;
 			Resource bicyclestation = model
-					.createResource(NsPrefix.getOntoNS() + "BicycleStation/" + i);
+					.createResource(NsPrefix.getOntoNS() + "BicycleStation/" + station.getID());
 			Resource bicycleClass = model.createResource(NsPrefix.getSchemaNS() + "bicyclestation");
 			
 			bicyclestation.addProperty(RDF.type,bicycleClass );
