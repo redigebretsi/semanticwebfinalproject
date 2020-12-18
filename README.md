@@ -21,7 +21,8 @@ Our Project is based on Lyon City Guide most of the data are situated in Lyon ar
 ### 2. Search Live Bicycle- Dynamic Data
  Here we can select data and time and can see the real time bicycle data under Available column with current weather informations.
 
-### 3. Fetching information about museums in lyon from wikidata end point by querying and displaying in our UI.
+### 3.Museum:Queried from wikidata end point
+ Fetching information about museums in lyon from wikidata end point by querying and displaying in our UI.
 
 ## How to Run the Project 
 
