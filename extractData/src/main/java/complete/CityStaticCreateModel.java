@@ -54,30 +54,35 @@ public class CityStaticCreateModel {
 		Property hasName = model.createProperty(NsPrefix.getOntoNS() + "hasName");
 		
 
-		// create
+		
 		Resource cityClass = model.createResource(NsPrefix.getSchemaNS()+"City");
 		city.addProperty(RDF.type,cityClass );
 		city.addProperty(hasName, "Lyon");
 		Resource bStation = model.createResource();
 		city.addProperty(hasa, bStation);
-			
-//		  ReadStaticSNCFData sncfData = new ReadStaticSNCFData(); 
-//		  List<SNCFStation> stations = sncfData.processData();
-//		  appendSNCFtoModel(bStation, stations);
+		
+		  //create model for SNCF
+		  ReadStaticSNCFData sncfData = new ReadStaticSNCFData(); 
+		  List<SNCFStation> stations = sncfData.processData();
+		  appendSNCFtoModel(bStation, stations);
 		  
+		  //create model for BusTramMetroData
 		  ReadStaticBusTramMetroData btmData = new ReadStaticBusTramMetroData();
 		  List<BTMStations> btmstations = btmData.processData();
 		  appendBTMStoModel(bStation, btmstations);
 		  
+		  
+		  //create model for BusTramMetroData
 		  ReadStaticBicycleData bicycleData = new ReadStaticBicycleData();
-		  List<BicycleStation> bicylestations = bicycleData.processData(); for
-		  (BicycleStation station : bicylestations) {
-		  System.out.println(station.getID()); }
+		  List<BicycleStation> bicylestations = bicycleData.processData();
+		  for(BicycleStation station : bicylestations) {
+		  //System.out.println(station.getID());
+			  }
 		  
 		  appendBicycletoModel(bStation, bicylestations);
 		  
 		  
-		  		 
+		//create model for HospitalData  		 
 		ReadHospitalData hospitalData = new ReadHospitalData();
 		List<Hospital> hospitalList = hospitalData.processData();
 		appendHospitalstoModel(city, hospitalList);

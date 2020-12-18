@@ -11,6 +11,7 @@ import java.security.GeneralSecurityException;
 import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -31,15 +32,14 @@ import org.json.JSONObject;
  */
 
 public class DynamicLyon {
+	
 	private static final String FUESKI_LOCAL_ENDPOINT = "http://localhost:3030/city/update";
 	
 	public static void main(String args[]) throws IOException, JSONException {
 		sslResolve();
-		String url = "https://download.data.grandlyon.com/wfs/rdata?SERVICE=WFS&VERSION=1.1.0&outputformat=GEOJSON&request=GetFeature&typename=jcd_jcdecaux.jcdvelov&SRSNAME=urn:ogc:def:crs:EPSG::4171";
-		String jsonText = readJsonFromUrl(url);
-		JSONObject json = new JSONObject(jsonText);
-		JSONArray fstations = (JSONArray) json.get("features");
-		processStationDyna(fstations);
+		ReadDynamicLyon dlyonData = new ReadDynamicLyon();
+		  List<Dbicycle> dbicyclestations = dlyonData.processData();
+		  updateQuery(dbicyclestations);
 	}
 	
 	public static void sslResolve() {
@@ -87,30 +87,22 @@ public class DynamicLyon {
 		return sb.toString();
 	}
 
-	private static void processStationDyna(JSONArray fstations) {
+	private static void updateQuery(List<Dbicycle> stations) {
 		
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		Date today = new Date();
 		String todayDate = formatter.format(today);
-		int i = 0;
-		System.out.println("oue statiob+++++++"+fstations.length());
-		for (Object station : fstations) {
-			i++;
-			JSONObject stationJson = (JSONObject) station;
-			JSONObject properties=(JSONObject) stationJson.get("properties");
-			String ID = (String) properties.get("number");
-			String nava = (String) properties.get("available_bikes");
-//			String ndocava = (String) properties.get("available_bike_stands");
-//		    String nupdatetime = (String) properties.get("last_update");
-//		    String nlat = (String) properties.get("lat");
-//		    String nlong = (String) properties.get("lng");BicycleStation
-			String iri = NsPrefix.getOntoNS() + "BicycleStation/" + ID;
-
+		
+			for (Dbicycle station : stations) {
+			
+			
+			String iri = station.getIri();
+			String nava = station.getNava();
 			String query = "PREFIX schema: <http://schema.org/> \r\n"
 					+ "PREFIX geo:   <https://www.w3.org/2003/01/geo/wgs84_pos#> \r\n"
 					+ "PREFIX rdf:   <http://www.w3.org/2000/01/rdf-schema/> \r\n"
 					+ "PREFIX onto:  <http://www.semanticweb.org/emse/ontologies/2020/11/city.owl#>\r\n"
-					+ "INSERT DATA { <" +  iri + "> onto:hasAvailability [ \r\n"
+					+ "INSERT DATA { <" +  iri + ">  a  schema:bicycleStation ;onto:hasAvailability [ \r\n"
 					+ " a onto:Availability; \r\n"
 					+ "            onto:updatedDatetime \"" + todayDate + "\" ;\r\n"
 					+ "        onto:availableBikes \""  + nava + "\" ;\r\n"
