@@ -39,7 +39,6 @@ public class DynamicLyon {
 		String jsonText = readJsonFromUrl(url);
 		JSONObject json = new JSONObject(jsonText);
 		JSONArray fstations = (JSONArray) json.get("features");
-		System.out.println(fstations);
 		processStationDyna(fstations);
 	}
 	
@@ -73,7 +72,6 @@ public class DynamicLyon {
 		try {
 			BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
 			String jsonText = readAll(rd);
-			System.out.println(jsonText);
 			return jsonText;
 		} finally {
 			is.close();
@@ -91,13 +89,11 @@ public class DynamicLyon {
 
 	private static void processStationDyna(JSONArray fstations) {
 		
-
-		String stationURIPrefix = NsPrefix.getOntoNS() + "Station";		
-		System.out.println(stationURIPrefix);
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		Date today = new Date();
 		String todayDate = formatter.format(today);
 		int i = 0;
+		System.out.println("oue statiob+++++++"+fstations.length());
 		for (Object station : fstations) {
 			i++;
 			JSONObject stationJson = (JSONObject) station;
@@ -107,26 +103,25 @@ public class DynamicLyon {
 //			String ndocava = (String) properties.get("available_bike_stands");
 //		    String nupdatetime = (String) properties.get("last_update");
 //		    String nlat = (String) properties.get("lat");
-//		    String nlong = (String) properties.get("lng");
-			String iri = NsPrefix.getOntoNS() + "BicycleStation/" + i;
+//		    String nlong = (String) properties.get("lng");BicycleStation
+			String iri = NsPrefix.getOntoNS() + "BicycleStation/" + ID;
 
 			String query = "PREFIX schema: <http://schema.org/> \r\n"
 					+ "PREFIX geo:   <https://www.w3.org/2003/01/geo/wgs84_pos#> \r\n"
 					+ "PREFIX rdf:   <http://www.w3.org/2000/01/rdf-schema/> \r\n"
 					+ "PREFIX onto:  <http://www.semanticweb.org/emse/ontologies/2020/11/city.owl#>\r\n"
-					+ "INSERT DATA { <" +  iri + "> onto:hasAvailability [].\r\n" 
-					+ "                        []                    a           onto:Availability; \r\n"
-					+ "					                           onto:updatedDatetime \"" + todayDate + "\";\r\n"
-					+ "					                           onto:availableBikes \""  + nava + "\";\r\n" 
-					+ "                                             .\r\n" 
-					+ "		}";
+					+ "INSERT DATA { <" +  iri + "> onto:hasAvailability [ \r\n"
+					+ " a onto:Availability; \r\n"
+					+ "            onto:updatedDatetime \"" + todayDate + "\" ;\r\n"
+					+ "        onto:availableBikes \""  + nava + "\" ;\r\n"
+					+ "].\r\n"
+					+"}";
 			
 			
-            System.out.println(query);
 			UpdateRequest update  = UpdateFactory.create(query);
-	        UpdateProcessor qexec = UpdateExecutionFactory.createRemote(update, FUESKI_LOCAL_ENDPOINT);
+	       UpdateProcessor qexec = UpdateExecutionFactory.createRemote(update, FUESKI_LOCAL_ENDPOINT);
 	        qexec.execute();	
-			System.out.println("DONE: Added Lyon dynamic"+iri);
+			//System.out.println("DONE: Added Lyon dynamic"+iri);
 		}
 		System.out.println("DONE: Added Lyon dynamic data");
 	}

@@ -43,14 +43,15 @@ import org.json.JSONObject;
 public class AddWeather {
 	private static final String FUESKI_LOCAL_ENDPOINT_GET = "http://localhost:3030/city";
 	private static final String FUESKI_LOCAL_ENDPOINT_UPDATE = "http://localhost:3030/city/update";
-	private static String url_part = "https://openweathermap.org/data/2.5/weather?appid=6eaa88893a7b68dde346b5c0ed4c980f";
+	private static String url_part = "http://api.openweathermap.org/data/2.5/weather?APPID=6eaa88893a7b68dde346b5c0ed4c980f";
 
 	static List<Location> locationsList;
 	
 	public static void main(String args[]) throws IOException, JSONException {
 		sslResolve();
 		locationsList = getAllStationsWithLocations();
-		processStationWeather(locationsList);
+		System.out.println(locationsList);
+		//processStationWeather(locationsList);
 	}
 
 	// Get all stations
@@ -59,30 +60,16 @@ public class AddWeather {
         String query = "PREFIX schema: <http://schema.org/> \r\n"
         		+ "PREFIX geo:   <https://www.w3.org/2003/01/geo/wgs84_pos#> \r\n"
         		+ "PREFIX xsd:   <http://www.w3.org/2000/01/rdf-schema/> \r\n"
-        		+ "PREFIX onto:  <http://www.semanticweb.org/emse/ontologies/2020/11/city.owl#> "+
-	                "\n" +
-	                "SELECT ?station ?lat ?lon ?stationName \n" +
-	                "WHERE {\n" +
-	                "  ?city onto:cityName ?cityName .\n" +
-	                "  ?city onto:hasStation ?station .\n" +
-	                "  ?station onto:stationName ?stationName .\n" +
-	                "  ?station onto:capacity ?capacity .\n" +
-	                "  ?station onto:lat ?lat .\n" +
-	                "  ?station onto:long ?lon .\n" +
-	                "  ?station onto:hasAvailability ?availability .\n" +
-	                "  ?availability onto:updatedDatetime ?updatedDateTime .\n" +
-	                "  ?availability onto:availableBikes ?availableBikes .  \n" +
-	                "  {SELECT ?station (MAX(?dt)  AS ?updatedDateTime)\n" +
-	                "    WHERE {\n" +
-	                "      ?city onto:cityName ?cityName .\n" +
-	                "      ?city onto:hasStation ?station .\n" +
-	                "      ?station onto:hasAvailability ?ava .\n" +
-	                "      ?ava onto:updatedDatetime ?dt .\n" +
-	                "      ?ava onto:availableBikes ?availableBikes .\n" +
-	                "    } GROUP BY ?station\n" +
-	                "  }\n" +
-	                "}ORDER BY ?stationName   ";
-
+        		+ "PREFIX onto:  <http://www.semanticweb.org/emse/ontologies/2020/11/city.owl#> \r\n"
+        		+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
+        		+ "\r\n"
+        		+ "SELECT ?station ?lat ?long ?hasName \r\n"
+        		+ "WHERE{\r\n"
+        		+ " ?station a schema:bicycleStation.\r\n"
+        		+ " ?station geo:Lat ?lat.\r\n"
+        		+ "  ?station geo:Long ?long. \r\n"
+        		+ "  ?station onto:hasName ?hasName.\r\n"
+        		+ "}";
 
 	        Query qu = QueryFactory.create(query);
 	        QueryExecution q = QueryExecutionFactory.sparqlService(FUESKI_LOCAL_ENDPOINT_GET, qu);
@@ -92,8 +79,8 @@ public class AddWeather {
 	            QuerySolution qs = results.next();
 	            Resource stationIRI = (Resource) qs.get("station");
 	            RDFNode lat = qs.get("lat");
-	            RDFNode lon = qs.get("lon");
-	            RDFNode name = qs.get("stationName");
+	            RDFNode lon = qs.get("long");
+	            RDFNode name = qs.get("hasName");
 
 	            String lIRI = stationIRI.getURI();
 	            Double lLat = lat.asLiteral().getDouble();
@@ -102,6 +89,7 @@ public class AddWeather {
 	            
 	            locationsList.add(new Location(lIRI, lname, lLat, lLon));
 	        }
+	        System.out.println(query);
 	        return locationsList;
 	}
 
@@ -165,15 +153,17 @@ public class AddWeather {
 			Double lon = location.getLon();
 
 			String url = url_part+"&lat="+lat.toString()+"&lon="+lon.toString();
+			System.out.println(url);
 
 			JSONObject weatherJson = readJsonFromUrl(url);
+			System.out.println(weatherJson);
 			
 			JSONArray weatherArray = weatherJson.getJSONArray("weather");
 			JSONObject weatherObject = (JSONObject) weatherArray.get(0);
 			String weatherDescription = (String) weatherObject.get("description");
 			
 			JSONObject mainObject = weatherJson.getJSONObject("main");
-			double temperature = (Double)mainObject.get("temp");
+			String temperature = mainObject.get("temp").toString();
 			int pressure =  (Integer)mainObject.get("pressure");
 			int humadity =  (Integer)mainObject.get("humidity");
 			
