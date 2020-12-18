@@ -225,26 +225,23 @@ public class CityGuideService {
         List<SNCFStations> sncfList = new ArrayList<SNCFStations>();
 
 
-        String query =  "PREFIX schema: <http://schema.org/> \r\n" + 
-        		"PREFIX geo:   <https://www.w3.org/2003/01/geo/wgs84_pos#> \r\n" + 
-        		"PREFIX rdf:   <http://www.w3.org/2000/01/rdf-schema/> \r\n" + 
-        		"PREFIX onto:  <http://www.semanticweb.org/emse/ontologies/2020/11/city.owl#>\r\n" + 
-        		"PREFIX ont: <http://purl.org/net/ns/ontology-annot#>\r\n" + 
-        		"\r\n" + 
-        		"SELECT ?y  ?x ?lon ?lat ?station ?at ?dt \r\n" + 
-        		"WHERE{\r\n" + 
-        		" \r\n" + 
-        		"  ?sncf onto:hasAscenseur ?y.\r\n" + 
-        		"  ?sncf onto:hasEscalator ?x.\r\n" + 
-        		"  ?sncf geo:Lat ?lat .\r\n" + 
-        		"  ?sncf geo:Long ?lon .\r\n" + 
-        		"  ?sncf onto:hasName ?station .\r\n" + 
-        		"  ?sncf onto:hasID ?id.\r\n" + 
-        		"  ?sncf onto:hasTrain [].\r\n" + 
-        		"  [] onto:hasArrival ?at.\r\n" + 
-        		"  [] onto:hasDeprature ?dt.\r\n" + 
-        		"  \r\n" + 
-        		"}";
+        String query =  "PREFIX schema: <http://schema.org/> \r\n"
+        		+ "PREFIX geo:   <https://www.w3.org/2003/01/geo/wgs84_pos#> \r\n"
+        		+ "PREFIX xsd:   <http://www.w3.org/2000/01/rdf-schema/> \r\n"
+        		+ "PREFIX onto:  <http://www.semanticweb.org/emse/ontologies/2020/11/city.owl#> \r\n"
+        		+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
+        		+ "SELECT ?y  ?x ?lon ?lat ?station ?at ?dt ?id WHERE{\r\n"
+        		+ "        		 ?sncf onto:hasAscenseur ?y.\r\n"
+        		+ "?sncf onto:hasEscalator ?x.\r\n"
+        		+ "?sncf geo:Lat ?lat .\r\n"
+        		+ "?sncf geo:Long ?lon .\r\n"
+        		+ "?sncf onto:hasName ?station .\r\n"
+        		+ "?sncf onto:hasID ?id.\r\n"
+        		+ "?sncf onto:hasTrain [].\r\n"
+        		+ "[] onto:hasArrival ?at.\r\n"
+        		+ "[] onto:hasDeprature ?dt.\r\n"
+        		+ "}\r\n"
+        		+ "LIMIT 20";
 
 
         Query qu = QueryFactory.create(query);
@@ -253,7 +250,7 @@ public class CityGuideService {
 
         while (results.hasNext()) {
             QuerySolution qs = results.next();
-            Resource stationIRI = (Resource) qs.get("station");
+          //  Resource stationIRI = (Resource) qs.get("station");
             RDFNode id = qs.get("id");
             RDFNode name = qs.get("station");
             RDFNode lat = qs.get("lat");
@@ -263,8 +260,8 @@ public class CityGuideService {
             RDFNode ascenseurRDF = qs.get("y");
             RDFNode escalatorRDF = qs.get("x");
 
-            String lIRI = stationIRI.getURI();
-            System.out.println(lIRI);
+           // String lIRI = stationIRI.getURI();
+            //System.out.println(lIRI);
             String ID = id.asLiteral().getString();//TODO modifications
             String nam = name.asLiteral().getString();
             double latitude = lat.asLiteral().getDouble();
