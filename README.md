@@ -1,10 +1,10 @@
 # SemanticWebProject
 Our Project is based on Lyon City Guide most of the data are situated in Lyon area. The project is divided into 2 parts:
 ## 1.Extract Data Project Folder
-* Read the static data either from CSV or from JSON.
+* Read the static data either from CSV or from JSON file as well as API.
 * Generate a model as per our ontology.
 * Save it in Triple Store in our case Apache Jena Fuseki.
-* We have also stored dynamic bicycle and weather data in our triple store.
+* We have also stored dynamic bicycle and weather data in our triple store by reading respective APIs.
 
 ## 2. Web development for Lyon City Guide in bicycleSharingStations Project Folder
 
@@ -28,7 +28,7 @@ We have 2 project folders: extractData and bicycleSharingStations.
 * Run Fuseki Sever.
 * Add new dataset as "city"
 * Open the project extractData and open the package, complete (extractdata\src\main\java\complete\).
-* Run 'CityStaticCreateModel.java’ program to extract static data of Hospitals,Bicycle,SNCF,Bus,Tram,Metro.Wait until the process completes, it gives a success message on console.
+* Run 'CityStaticCreateModel.java’ program to extract static data of Hospitals,Bicycle,SNCF,Bus,Tram,Metro.Wait until the process completes, it gives a success message, "Finished!", on console.
 * Run DynamicLyon.java, AddWeather.java files to extract dynamic data. Wait until the process completes.
  
 Now the first part of the project is done. All the data are retrieved,modelled and saved in triple store. To verify that browse
