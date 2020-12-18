@@ -23,12 +23,10 @@
        $("#busStations").hide();
        $("#tramStations").hide();
          bicycleStationsTable = $('#bicycleStationsTable').DataTable({
-                    "sPaginationType": "full_numbers",
                     "bDestroy": true,
                     'bAutoWidth': false,
                     'searching': false,
                     'info': false,
-                    'paging': false,
                     "columnDefs": [
                         {width: "320px", "targets": [0]},
                         {width: "100px", "targets": [1]},
@@ -52,13 +50,10 @@
                           'info': false,
                           'paging': false,
                           "columnDefs": [
-                              {width: "100px", "targets": [0,1,4]},
-                         
+                              {width: "100px", "targets": [0,1,4]},                         
                               {width: "80px", "targets": [2]},
                               {width: "320px", "targets": [3]},
-                              {className: "text-center", "targets": [1, 2, 3]},
-                              {"visible": false, "targets":[4]}
-                             
+                              {className: "text-center", "targets": [1, 2, 3]}                             
                           ],
                           "order": [
                               [0, "asc"]
@@ -77,9 +72,7 @@
                                     {width: "320px", "targets": [0]},
                                     {width: "100px", "targets": [1,3]},
                                     {width: "80px", "targets": [2]},
-                                    {className: "text-center", "targets": [1, 2, 3]},
-                                    {"visible": false, "targets":[3]}
-                                   
+                                    {className: "text-center", "targets": [1, 2, 3]}                                   
                                 ],
                                 "order": [
                                     [0, "asc"]
@@ -98,8 +91,7 @@
                                     	  {width: "320px", "targets": [0]},
                                           {width: "100px", "targets": [1,3]},
                                           {width: "80px", "targets": [2]},
-                                          {className: "text-center", "targets": [1, 2, 3]},
-                                          {"visible": false, "targets":[3]}
+                                          {className: "text-center", "targets": [1, 2, 3]}
                                       ],
                                       "order": [
                                           [0, "asc"]
@@ -119,8 +111,7 @@
                                          	  {width: "320px", "targets": [0]},
                                                {width: "100px", "targets": [1,3]},
                                                {width: "80px", "targets": [2]},
-                                               {className: "text-center", "targets": [1, 2, 3]},
-                                               {"visible": false, "targets":[3]}
+                                               {className: "text-center", "targets": [1, 2, 3]}
                                            ],
                                            "order": [
                                                [0, "asc"]
@@ -139,8 +130,7 @@
                                                     {width: "320px", "targets": [0]},
                                                     {width: "100px", "targets": [1,5,6]},
                                                     {width: "80px", "targets": [2]},
-                                                    {width: "110px", "targets": [3,4]},
-                                                  
+                                                    {width: "110px", "targets": [3,4]},                                                  
                                                     {className: "text-center", "targets": [1, 2, 3, 5, 6]}
                                                     
                                                 ],
@@ -436,8 +426,8 @@ function setBTMTableRows(choice,data){
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <style type="text/css">
 .table .thead-dark th {
-    color: #007bff;
-    background-color: #cc8417;
+    color: #330000;
+    background-color: #CCCCFF;
     }
 
 .error {
@@ -449,7 +439,7 @@ label.error {
   display: inline;
 }
 #footer{
-    background: #cc8417;
+    background: #CCCCFF;
 }
 .nav-item{
     text-transform: uppercase;
@@ -518,9 +508,6 @@ label.error {
                             <th>Latitude</th>
                             <th>Longitude</th>
                             <th>Capacity</th>
-                            <th>Available</th>
-                            <th>Updated at</th>
-                            <th>Station IRI</th>
                         </tr>
                         </thead>
                         <tbody id="bicycletbody"></tbody>
@@ -536,8 +523,6 @@ label.error {
                             <th>Longitude</th>
                             <th>Address</th>
                             <th>Telephone</th>
-                           
-                            <th>Station IRI</th>
                         </tr>
                         </thead>
                         <tbody id="hospitaltbody"></tbody>
@@ -551,8 +536,7 @@ label.error {
                             <th>Bus Stop</th>
                             <th>Latitude</th>
                             <th>Longitude</th>
-                            <th>Bus Number</th>
-                            <th>Station IRI</th>
+                            <th>Bus Number</th>                            
                         </tr>
                         </thead>
                         <tbody id="bustbody"></tbody>
@@ -567,7 +551,6 @@ label.error {
                             <th>Latitude</th>
                             <th>Longitude</th>
                             <th>Tram Line</th>
-                            <th>Station IRI</th>
                         </tr>
                         </thead>
                         <tbody id="tramtbody"></tbody>
@@ -582,7 +565,6 @@ label.error {
                             <th>Latitude</th>
                             <th>Longitude</th>
                             <th>Metro Line</th>
-                            <th>Station IRI</th>
                         </tr>
                         </thead>
                         <tbody id="metrotbody"></tbody>
@@ -599,14 +581,13 @@ label.error {
                             <th>Departure Time</th>
                             <th>Has Escalator</th>
                             <th>Has Elevator</th>
-                            <th>Station IRI</th>
                         </tr>
                         </thead>
                         <tbody id="sncftbody"></tbody>
                     </table>
                 </div>
             </div>
-        </div
+        </div>
     </div>
 </div>
 <br/><br/>
@@ -615,16 +596,6 @@ label.error {
         <div id="footer" class="footer-copyright text-center py-3">© 2020 Copyright: Semantic Web
         </div>
     </footer>
-</div>
-
-<div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" data-backdrop="static" area-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-body">
-                <div class="loader"></div> bicycleStationsTable = $('#bicycleStationsTable').DataTable({
-            </div>
-        </div>
-    </div>
 </div>
 
 </body>

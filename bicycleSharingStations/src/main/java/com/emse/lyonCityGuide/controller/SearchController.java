@@ -1,5 +1,6 @@
 package com.emse.lyonCityGuide.controller;
 
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
@@ -10,10 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.emse.lyonCityGuide.model.BTMStations;
 import com.emse.lyonCityGuide.model.BicycleStation;
+import com.emse.lyonCityGuide.model.DynamicData;
 import com.emse.lyonCityGuide.model.Hospital;
 import com.emse.lyonCityGuide.model.SNCFStations;
 import com.emse.lyonCityGuide.service.CityGuideService;
 
+import java.io.IOException;
 import java.util.List;
 
 @ComponentScan(value = "com.emse.bicycleSharingStations")
@@ -46,5 +49,11 @@ public class SearchController {
         //System.out.println("cname::" + cname);
         List<SNCFStations> sncfStation = cityGuideService.findSNCFmodel();
         return new ResponseEntity<List<SNCFStations>>(sncfStation, HttpStatus.OK);
+    }
+    @RequestMapping("/api/fetchDynamic/")
+    public ResponseEntity<List<DynamicData>> fetchDynamic() throws JSONException, IOException {
+        //System.out.println("cname::" + cname);
+        List<DynamicData> dynamicData = cityGuideService.findDynamicData();
+        return new ResponseEntity<List<DynamicData>>(dynamicData, HttpStatus.OK);
     }
 }

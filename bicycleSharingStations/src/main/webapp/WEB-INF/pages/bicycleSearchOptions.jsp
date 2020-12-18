@@ -37,7 +37,7 @@
         $.ajax({
             type: "GET",
             contentType: "application/json",
-            url: "/api/search/" + city,
+            url: "/api/fetchDynamic/",
             dataType: 'json',
             cache: false,
             timeout: 600000,
@@ -66,8 +66,8 @@
         console.log(value.ID);
             res +=
             '<tr>'+
-                '<td vocab="https://opendata.paris.fr/api/records/1.0/search/?dataset=velib-emplacement-des-stations" resource="'+value.stationName+'" typeof="Station"><span property="stationName">'+value.name+'</span></td>'+
-                '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2020/11/city.owl#"'+value.stationName+'"><span property="onto:availableBikes">'+value.availableBicycle+'</span></td>'+
+                '<td vocab="https://opendata.paris.fr/api/records/1.0/search/?dataset=velib-emplacement-des-stations" resource="'+value.stationName+'" typeof="Station"><span property="stationName">'+value.stationName+'</span></td>'+
+                '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2020/11/city.owl#"'+value.stationName+'"><span property="onto:availableBikes">'+value.availableBikes+'</span></td>'+
                 '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2020/11/city.owl#"'+value.stationName+'"><span property="onto:temperature">'+value.temperature+'</span></td>'+
                 '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2020/11/city.owl#" resource="'+value.stationName+'"><span property="onto:humidity">'+value.humidity+'</span></td>'+
                 '<td prefix="onto: http://www.semanticweb.org/emse/ontologies/2020/11/city.owl#" resource="'+value.stationName+'"><span property="onto:windspeed">'+value.windSpeed+'</span></td>'+
@@ -87,8 +87,8 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <style type="text/css">
 .table .thead-dark th {
-    color: #007bff;
-    background-color: #cc8417;
+    color: #330000;
+    background-color: #CCCCFF;
     }
 
 .error {
@@ -100,7 +100,7 @@ label.error {
   display: inline;
 }
 #footer{
-    background: #cc8417;
+    background: #CCCCFF;
 }
 .bg-light{
 
@@ -189,9 +189,9 @@ label.error {
                         <tr>
                             <th>Station Name</th>
                             <th>Available Bicycle</th>
-                            <th>Temperature</th>
-                            <th>Humidity</th>
-                            <th>WindSpeed </th>
+                            <th>Temperature (F)</th>
+                            <th>Humidity (%)</th>
+                            <th>WindSpeed (KMH)</th>
                             <th>Pressure</th>
                         </tr>
                         </thead>
