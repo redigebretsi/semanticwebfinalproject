@@ -1,7 +1,11 @@
 h1{
-	color:#000000;
+	color:#c6752f;
 }
 
 h2{
 	color:#000000;
+}
+button{
+	background: #cc8417;	
+    border: 1px solid #d38106;
 }

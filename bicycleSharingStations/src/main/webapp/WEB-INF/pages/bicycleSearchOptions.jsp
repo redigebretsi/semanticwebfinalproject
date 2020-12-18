@@ -88,7 +88,7 @@
 <style type="text/css">
 .table .thead-dark th {
     color: #007bff;
-    background-color: #343a40;
+    background-color: #cc8417;
     }
 
 .error {
@@ -100,7 +100,7 @@ label.error {
   display: inline;
 }
 #footer{
-    background: #007bff;
+    background: #cc8417;
 }
 .bg-light{
 

@@ -35,7 +35,8 @@
                         {width: "80px", "targets": [2]},
                         {width: "100px", "targets": [3]},
                         {className: "text-center", "targets": [1, 2, 3]},
-                        {className: "action-btn-column", "targets": [4]}
+                        {className: "action-btn-column", "targets": [4]},
+                        {"visible": false, "targets":[7]}
                     ],
                     "order": [
                         [0, "asc"]
@@ -55,7 +56,8 @@
                          
                               {width: "80px", "targets": [2]},
                               {width: "320px", "targets": [3]},
-                              {className: "text-center", "targets": [1, 2, 3]}
+                              {className: "text-center", "targets": [1, 2, 3]},
+                              {"visible": false, "targets":[4]}
                              
                           ],
                           "order": [
@@ -75,7 +77,8 @@
                                     {width: "320px", "targets": [0]},
                                     {width: "100px", "targets": [1,3]},
                                     {width: "80px", "targets": [2]},
-                                    {className: "text-center", "targets": [1, 2, 3]}
+                                    {className: "text-center", "targets": [1, 2, 3]},
+                                    {"visible": false, "targets":[3]}
                                    
                                 ],
                                 "order": [
@@ -95,7 +98,8 @@
                                     	  {width: "320px", "targets": [0]},
                                           {width: "100px", "targets": [1,3]},
                                           {width: "80px", "targets": [2]},
-                                          {className: "text-center", "targets": [1, 2, 3]}
+                                          {className: "text-center", "targets": [1, 2, 3]},
+                                          {"visible": false, "targets":[3]}
                                       ],
                                       "order": [
                                           [0, "asc"]
@@ -115,7 +119,8 @@
                                          	  {width: "320px", "targets": [0]},
                                                {width: "100px", "targets": [1,3]},
                                                {width: "80px", "targets": [2]},
-                                               {className: "text-center", "targets": [1, 2, 3]}
+                                               {className: "text-center", "targets": [1, 2, 3]},
+                                               {"visible": false, "targets":[3]}
                                            ],
                                            "order": [
                                                [0, "asc"]
@@ -305,13 +310,13 @@ function setSNCFTableRows(data){
    // console.log(value);
         res +=
         '<tr>'+
-            '<td vocab="https://opendata.paris.fr/api/records/1.0/search/?dataset=velib-emplacement-des-stations" resource="'+value.id+'" typeof="PublicBicycleStation"><span property="stationName">'+value.name+'</span></td>'+
+            '<td vocab="https://opendata.paris.fr/api/records/1.0/search/?dataset=velib-emplacement-des-stations" resource="'+value.id+'" typeof="PublicBicycleStation"><span property="stationName">'+value.SNCFStationName+'</span></td>'+
             '<td  resource="'+value.id+'"><span property="geo:lat">'+value.lat+'</span></td>'+
             '<td  resource="'+value.id+'"><span property="geo:lon">'+value.lon+'</span></td>'+
-            '<td  resource="'+value.id+'"><span property="onto:hasArrival">'+value.arrival+'</span></td>'+
-            '<td  resource="'+value.id+'"><span property="onto:hasDeparture">'+value.depart+'</span></td>'+
-            '<td  resource="'+value.id+'"><span property="onto:hasAscenseur">'+value.ascenseur+'</span></td>'+
-            '<td  resource="'+value.id+'"><span property="onto:hasEscalator">'+value.escalator+'</span></td>'+
+            '<td  resource="'+value.id+'"><span property="onto:hasArrival">'+value.ArrivalTime+'</span></td>'+
+            '<td  resource="'+value.id+'"><span property="onto:hasDeparture">'+value.DepartTime+'</span></td>'+
+            '<td  resource="'+value.id+'"><span property="onto:hasAscenseur">'+value.HasElevatorr+'</span></td>'+
+            '<td  resource="'+value.id+'"><span property="onto:hasEscalator">'+value.HasEscalator+'</span></td>'+
         '</tr>';
     });
 
@@ -432,7 +437,7 @@ function setBTMTableRows(choice,data){
 <style type="text/css">
 .table .thead-dark th {
     color: #007bff;
-    background-color: #343a40;
+    background-color: #cc8417;
     }
 
 .error {
@@ -444,7 +449,7 @@ label.error {
   display: inline;
 }
 #footer{
-    background: #007bff;
+    background: #cc8417;
 }
 .nav-item{
     text-transform: uppercase;
@@ -515,6 +520,7 @@ label.error {
                             <th>Capacity</th>
                             <th>Available</th>
                             <th>Updated at</th>
+                            <th>Station IRI</th>
                         </tr>
                         </thead>
                         <tbody id="bicycletbody"></tbody>
@@ -531,6 +537,7 @@ label.error {
                             <th>Address</th>
                             <th>Telephone</th>
                            
+                            <th>Station IRI</th>
                         </tr>
                         </thead>
                         <tbody id="hospitaltbody"></tbody>
@@ -545,6 +552,7 @@ label.error {
                             <th>Latitude</th>
                             <th>Longitude</th>
                             <th>Bus Number</th>
+                            <th>Station IRI</th>
                         </tr>
                         </thead>
                         <tbody id="bustbody"></tbody>
@@ -559,6 +567,7 @@ label.error {
                             <th>Latitude</th>
                             <th>Longitude</th>
                             <th>Tram Line</th>
+                            <th>Station IRI</th>
                         </tr>
                         </thead>
                         <tbody id="tramtbody"></tbody>
@@ -573,6 +582,7 @@ label.error {
                             <th>Latitude</th>
                             <th>Longitude</th>
                             <th>Metro Line</th>
+                            <th>Station IRI</th>
                         </tr>
                         </thead>
                         <tbody id="metrotbody"></tbody>
@@ -589,6 +599,7 @@ label.error {
                             <th>Departure Time</th>
                             <th>Has Escalator</th>
                             <th>Has Elevator</th>
+                            <th>Station IRI</th>
                         </tr>
                         </thead>
                         <tbody id="sncftbody"></tbody>
